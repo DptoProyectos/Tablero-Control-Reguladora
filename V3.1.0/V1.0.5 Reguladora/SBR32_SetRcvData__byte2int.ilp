@@ -1,0 +1,127 @@
+(*2*)
+(* Network 0 *)
+(*YCHPreparo puntero*)
+LD    TRUE
+AND(
+LD    TRUE
+MOVE    &VB0, %VD512
+OR(
+LD    TRUE
+I_TO_DI    24, dint1
+)
+OR(
+LD    TRUE
+I_TO_DI    SetRcvData_BfPro, dint2
+)
+)
+MOVE    dint1, dint3
+ADD    dint2, dint3
+ADD    dint3, %VD512
+(* Network 1 *)
+(*YCH*)
+LD    TRUE
+B_TO_I    SetRcvData_NoUni, int4
+MOVE    0.0, real6
+(* Network 2 *)
+(*YCHEjecuto ciclo en busa de caracteres*)
+LD    TRUE
+FOR    int5, 1, int4
+(* Network 3 *)
+(*YCH*)
+LD    TRUE
+AND(
+LD    TRUE
+MOVE    *VD512, byte0
+B_TO_I    byte0, int0
+I_TO_DI    int0, dint0
+DI_TO_R    dint0, real0
+OR(
+LD    TRUE
+AND(
+LD    TRUE
+I_TO_DI    int4, dint4
+DI_TO_R    dint4, real4
+OR(
+LD    TRUE
+I_TO_DI    int5, dint5
+DI_TO_R    dint5, real5
+)
+)
+MOVE    real4, real1
+SUB    real5, real1
+CAL    SBR31    real1, real2
+)
+)
+MOVE    real0, real3
+MUL    real2, real3
+ADD    real3, real6
+INC    %VD512
+(* Network 4 *)
+LD    TRUE
+NEXT
+(* Network 5 *)
+LD    TRUE
+MOVE    real6, OutUn
+(* Network 6 *)
+(*YCHPreparo puntero*)
+LD    TRUE
+AND(
+LD    TRUE
+MOVE    &VB0, %VD524
+OR(
+LD    TRUE
+I_TO_DI    64, dint1
+)
+OR(
+LD    TRUE
+I_TO_DI    SetRcvData_BfPro, dint2
+)
+)
+MOVE    dint1, dint3
+ADD    dint2, dint3
+ADD    dint3, %VD524
+(* Network 7 *)
+(*YCH*)
+LD    TRUE
+B_TO_I    SetRcvData_NoDec, int4
+MOVE    0.0, real6
+(* Network 8 *)
+(*YCHEjecuto ciclo en busa de caracteres*)
+LD    TRUE
+FOR    int5, 1, int4
+(* Network 9 *)
+(*YCH*)
+LD    TRUE
+AND(
+LD    TRUE
+MOVE    *VD524, byte0
+B_TO_I    byte0, int0
+I_TO_DI    int0, dint0
+DI_TO_R    dint0, real0
+OR(
+LD    TRUE
+AND(
+LD    TRUE
+I_TO_DI    int4, dint4
+DI_TO_R    dint4, real4
+OR(
+LD    TRUE
+I_TO_DI    int5, dint5
+DI_TO_R    dint5, real5
+)
+)
+MOVE    real4, real1
+SUB    real5, real1
+CAL    SBR31    real1, real2
+)
+)
+MOVE    real0, real3
+MUL    real2, real3
+ADD    real3, real6
+INC    %VD524
+(* Network 10 *)
+LD    TRUE
+NEXT
+(* Network 11 *)
+LD    TRUE
+MOVE    real6, OutDec

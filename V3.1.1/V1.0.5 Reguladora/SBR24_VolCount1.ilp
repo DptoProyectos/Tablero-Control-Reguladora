@@ -1,0 +1,94 @@
+(*2*)
+(* Network 0 *)
+(*CONVERSIÓN DEBIDO A QUE LOS TIMERS TIENEN RESOLUCIÓN DE 10 MS*)
+LD    TRUE
+AND(
+LD    TRUE
+MOVE    PTON, pTonMs
+DIV    10, pTonMs
+OR(
+LD    TRUE
+MOVE    PTOFF, pToffMs
+DIV    10, pToffMs
+)
+)
+(* Network 1 *)
+(*CONDICION INICIAL*)
+LD    %SM0.1
+MOVE    0, pulseSt
+(* Network 2 *)
+(*STATE_0*)
+LD    TRUE
+EQ    pulseSt, 0
+AND    CH
+R_TRIG
+MOVE    1, pulseSt
+(* Network 3 *)
+(*YCHSTATE_1Cuento el TON del pulso y aplico filtrado su tiempo en alto (TON)*)
+LD    TRUE
+EQ    pulseSt, 1
+AND(
+LD    TRUE
+TON   T17, 32767
+__CR_EQ_1
+MOVE    T17, cTimeOn
+__CR_RESTORE
+MOVE    2, pulseSt
+OR(
+LD    CH
+F_TRIG
+AND(
+LD    TRUE
+GE    cTimeOn, pTonMs
+MOVE    2, pulseSt
+OR(
+LD    TRUE
+LT    cTimeOn, pTonMs
+MOVE    0, pulseSt
+)
+)
+)
+)
+(* Network 4 *)
+(*YCHSTATE_2Cuento el TOFF del pulso y aplico filtrado su tiempo en alto (TOFF)*)
+LD    TRUE
+EQ    pulseSt, 2
+AND(
+LD    TRUE
+TON   T18, 32767
+__CR_EQ_1
+MOVE    T18, cTimeOf
+__CR_RESTORE
+MOVE    3, pulseSt
+OR(
+LD    CH
+R_TRIG
+AND(
+LD    TRUE
+GE    cTimeOf, pToffMs
+MOVE    3, pulseSt
+OR(
+LD    TRUE
+LT    cTimeOf, pToffMs
+MOVE    1, pulseSt
+)
+)
+)
+)
+(* Network 5 *)
+(*YCHSTATE_3Se incrementa el contador de pulsos*)
+LD    TRUE
+EQ    pulseSt, 3
+AND(
+LD    TRUE
+MOVE    1, pulseSt
+OR(
+LD    TRUE
+INC    COUNT
+)
+OR(
+LD    TRUE
+GE    COUNT, DI#99999999
+MOVE    DI#0, COUNT
+)
+)

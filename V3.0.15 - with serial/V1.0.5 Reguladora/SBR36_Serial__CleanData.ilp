@@ -1,0 +1,36 @@
+(*2*)
+(* Network 0 *)
+(*YCHSe crea un puntero que apunte a la ubicacion en donde se encuentran los datos temporales*)
+LD    TRUE
+MOVE    &VB0, %VD504
+(* Network 1 *)
+(*YCHDesplazamos el puntero a donde se encuentran los datos temporales*)
+LD    TRUE
+I_TO_DI    tmpAddr, dint0
+ADD    dint0, %VD504
+(* Network 2 *)
+(*YCHSe desplaza el puntero en caso de querer quedarse solo con una parte final de los caracteres*)
+LD    TRUE
+ADD    pOffset, %VD504
+MOVE    0, int0
+(* Network 3 *)
+(*YCHSe limpian todos los caracteres que se consideren espacios y que se encuentren en el buffer de datos temporales*)
+LD    TRUE
+FOR    int0, 0, noChar
+AND(
+LD    TRUE
+NE    *VD504, B#32
+MOVE    *VD504, *VD500
+INC    %VD504
+INC    %VD500
+INC    serial_buffSize
+OR(
+LD    TRUE
+EQ    *VD504, B#32
+INC    %VD504
+)
+)
+(* Network 4 *)
+(*YCHCierro el ciclo FOR*)
+LD    TRUE
+NEXT

@@ -1,0 +1,41 @@
+(*2*)
+(* Network 0 *)
+(*YCHSe setea la salida de frecuencia para la bomba*)
+LD    TRUE
+AND(
+LD    TRUE
+MOVE    FreqPump, real0
+MUL    100.0, real0
+R_TO_DI    real0, dint0
+DI_TO_I    dint0, int0
+OR(
+LD    TRUE
+I_TO_DI    AO0_Imin, dint1
+DI_TO_R    dint1, real1
+MOVE    real1, real2
+MUL    1000.0, real2
+)
+OR(
+LD    TRUE
+I_TO_DI    AO0_Imax, dint2
+DI_TO_R    dint2, real3
+MOVE    real3, real4
+MUL    1000.0, real4
+)
+OR(
+LD    TRUE
+MOVE    AO0_Mmin, real5
+MUL    100.0, real5
+R_TO_DI    real5, dint1
+DI_TO_I    dint1, int2
+)
+OR(
+LD    TRUE
+MOVE    AO0_Mmax, real6
+MUL    100.0, real6
+R_TO_DI    real6, dint2
+DI_TO_I    dint2, int3
+)
+)
+LINCO    int2, int3, real2, real4, 1.0, int0, dint1, real0
+DI_TO_I    dint1, %AQW0

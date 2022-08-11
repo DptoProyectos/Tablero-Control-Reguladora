@@ -1,0 +1,124 @@
+(*2*)
+(* Network 0 *)
+(*YCHCondición para desactivar el timer*)
+LD    DES
+ANDN    timerOn
+S    desCond
+(* Network 1 *)
+(*YCHTIMER 8PROGRAMACION DE ENCENDIDO*)
+LD    ENB
+ANDN    desCond
+EQ    RTC_Hour, t8HourStart
+EQ    RTC_Minute, t8MinStart
+AND(
+LD    %M111.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M111.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M111.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M111.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M111.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M111.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M111.6
+EQ    RTC_Week, B#7
+)
+)
+S    CTRL
+S    OUT1
+S    OUT2
+S    timerOn
+(* Network 2 *)
+(*YCHTIMER 8PROGRAMACION DE APAGADO*)
+LD    ENB
+ANDN    desCond
+EQ    RTC_Hour, t8HourStop
+EQ    RTC_Minute, t8MinStop
+AND(
+LD    %M111.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M111.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M111.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M111.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M111.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M111.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M111.6
+EQ    RTC_Week, B#7
+)
+)
+S    CTRL
+R    OUT1
+R    OUT2
+R    timerOn
+(* Network 3 *)
+(*YCHEn períodos entre la horra de arranque y la de parada mantenemos las salidas activas*)
+LD    ENB
+ANDN    desCond
+AND    timerOn
+S    CTRL
+S    OUT1
+S    OUT2
+(* Network 4 *)
+(*YCHTIMER 8PROGRAMACION DE ENCENDIDO*)
+LD    TRUE
+EQ    RTC_Hour, t8HourStop
+EQ    RTC_Minute, t8MinStop
+AND(
+LD    %M111.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M111.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M111.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M111.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M111.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M111.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M111.6
+EQ    RTC_Week, B#7
+)
+)
+R    desCond

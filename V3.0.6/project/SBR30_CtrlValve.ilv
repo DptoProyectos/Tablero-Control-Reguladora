@@ -1,0 +1,14 @@
+VAR_INPUT
+    Act  AT  %L3.2 : BOOL ; (* Acción a ejecutar en la válvula ( 0-> Cerrar | 1 -> abrir ) *) 
+    TimeOpen  AT  %LW208 : INT ; (* Tiempo en segundos que demora en abrir la válvula *) 
+    TimeClos  AT  %LW210 : INT ; (* Tiempo en segundos que demora en cerrar la válvula *) 
+END_VAR
+VAR_OUTPUT
+    ValBusy  AT  %L3.5 : BOOL ; (* Salida que indica que la válvula está en proceso *) 
+    CtrlOpen  AT  %L3.3 : BOOL ; (* Salida de control para abrir *) 
+    CtrlClos  AT  %L3.4 : BOOL ; (* Salida de control para cerrar *) 
+END_VAR
+VAR
+    opening  AT  %L3.6 : BOOL ; (*  *) 
+    clossing  AT  %L3.7 : BOOL ; (*  *) 
+END_VAR

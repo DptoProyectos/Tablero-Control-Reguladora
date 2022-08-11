@@ -1,0 +1,40 @@
+(*2*)
+(* Network 0 *)
+(*YCHArmo la etiqueta con los argumento introducidos y la coloco en el buffer tx*)
+LD    TRUE
+AND(
+LD    enChar1
+MOVE    Char1, *VD500
+INC    %VD500
+INC    serial_buffSize
+OR(
+LD    enChar2
+MOVE    Char2, *VD500
+INC    %VD500
+INC    serial_buffSize
+)
+OR(
+LD    enChar3
+MOVE    Char3, *VD500
+INC    %VD500
+INC    serial_buffSize
+)
+OR(
+LD    enChar4
+MOVE    Char4, *VD500
+INC    %VD500
+INC    serial_buffSize
+)
+OR(
+LD    enChar5
+MOVE    Char5, *VD500
+INC    %VD500
+INC    serial_buffSize
+)
+OR(
+LD    enChar6
+MOVE    Char6, *VD500
+INC    %VD500
+INC    serial_buffSize
+)
+)

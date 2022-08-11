@@ -1,0 +1,7 @@
+VAR_INPUT
+    hexaIn  AT  %LB228 : BYTE ; (*  *) 
+END_VAR
+VAR_OUTPUT
+    low  AT  %LB229 : BYTE ; (*  *) 
+    higth  AT  %LB230 : BYTE ; (*  *) 
+END_VAR

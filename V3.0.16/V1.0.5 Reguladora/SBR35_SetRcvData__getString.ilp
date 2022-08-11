@@ -1,0 +1,95 @@
+(*2*)
+(* Network 0 *)
+(*YCHPreparo puntero*)
+LD    TRUE
+MOVE    &VB0, %VD504
+I_TO_DI    SetRcvData_BfPro, dint1
+ADD    dint1, %VD504
+(* Network 1 *)
+(*YCHPreparo puntero*)
+LD    TRUE
+MOVE    &VB0, %VD516
+I_TO_DI    40, dint1
+I_TO_DI    SetRcvData_BfPro, dint2
+MOVE    dint1, dint3
+ADD    dint2, dint3
+ADD    dint3, %VD516
+(* Network 2 *)
+(*YCH1-Limpio el espacio de memoria en donde voy a almacenar las unidades2-Limpio el espacio de memoria en donde voy a almacenar los decimales*)
+LD    TRUE
+FILL  B#0, SetRcvData_StrD, B#15
+FILL  B#0, SetRcvData_StrUn, B#15
+(* Network 3 *)
+(*YCH1-Pongo el contador de ciclos en cero2-Pongo el contador de caracteres en cero3-Pongo el contador de unidades en cero4-Pongo el contador de decimales en cero5-Asumo que se esta leyendo un entero*)
+LD    TRUE
+MOVE    0, int0
+OR(
+LD    TRUE
+MOVE    B#0, SetRcvData_NoCha
+)
+OR(
+LD    TRUE
+MOVE    B#0, SetRcvData_NoUni
+)
+OR(
+LD    TRUE
+MOVE    B#0, SetRcvData_NoDec
+)
+R    %M113.2
+(* Network 4 *)
+(*YCHEjecuto ciclo en busa de caracteres*)
+LD    TRUE
+FOR    int0, 0, 15
+(* Network 5 *)
+(*YCHReviso si se llegó al final del frame mediante la llegada del caracter <*)
+LD    TRUE
+EQ    *VD500, B#60
+ST   endScan
+ST   %M113.4
+(* Network 6 *)
+(*YCHCodiciono hasta que se encuentre cualquiera de los siguientes signos  [ ; | : ]*)
+LDN    endScan
+NE    *VD500, B#58
+NE    *VD500, B#59
+INC    SetRcvData_NoCha
+ST   strYet
+(* Network 7 *)
+(*YCHDetecto signo negativo*)
+LDN    endScan
+AND    strYet
+EQ    *VD500, B#45
+INC    %VD500
+S    %M113.3
+(* Network 8 *)
+(*YCHDetecto si entre los caracteres hay un punto para indicar numero con coma*)
+LDN    endScan
+AND    strYet
+EQ    *VD500, B#46
+INC    %VD504
+S    %M113.2
+(* Network 9 *)
+(*YCHSi no estoy sobre caracter que sea un punto 1-Copio los caracteres2-Incremento contador de caracteres3-Incremento contador de unidades4-Incremento contador de decimales*)
+LDN    endScan
+AND    strYet
+NE    *VD500, B#46
+AND(
+LDN    %M113.2
+INC    SetRcvData_NoUni
+MOVE    *VD500, *VD504
+INC    %VD504
+OR(
+LD    %M113.2
+INC    SetRcvData_NoDec
+MOVE    *VD500, *VD516
+INC    %VD516
+)
+)
+(* Network 10 *)
+(*YCHIncremento los punteros*)
+LDN    endScan
+AND    strYet
+INC    %VD500
+(* Network 11 *)
+(*YCHFin del ciclo*)
+LD    TRUE
+NEXT

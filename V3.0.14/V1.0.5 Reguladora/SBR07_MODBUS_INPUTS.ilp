@@ -1,0 +1,212 @@
+(*2*)
+(* Network 0 *)
+(*YCHSeñal de modo que proviene de la web100 -> EMERGENCIA | 101 -> AUTOMATICO | 102 -REMOTO*)
+LD    TRUE
+AND(
+LD    TRUE
+EQ    mReg1934, 100
+OR(
+LD    TRUE
+EQ    mReg1934, 101
+)
+OR(
+LD    TRUE
+EQ    mReg1934, 102
+)
+OR(
+LD    TRUE
+EQ    mReg1934, 103
+)
+)
+MOVE    mReg1934, WebMode
+SUB    100, WebMode
+(* Network 1 *)
+(*YCHOrden para cerrar la válvula que viene desde el control web100 -> Cerrar101 -> Abrir*)
+LD    TRUE
+EQ    mReg1935, 100
+R    %V3648.0
+(* Network 2 *)
+(*YCHOrden para cerrar la válvula que viene desde el control web100 -> Cerrar101 -> Abrir*)
+LD    TRUE
+EQ    mReg1935, 101
+S    %V3648.0
+(* Network 3 *)
+(*YCHNivel minimo para el control automatico por niveles*)
+LD    TRUE
+MOVE    mReg1955, MinLevel
+(* Network 4 *)
+(*YCHNivel maximo para el control automarico por nivelesLevelRef*)
+LD    TRUE
+MOVE    mReg1957, MaxLevel
+(* Network 5 *)
+(*YCHNivel de referencia para el control automarico por niveles*)
+LD    TRUE
+CAL    SBR29    mReg1962, mReg2032, RemoteRef, errorTxRef1, errorTxRef2
+(* Network 6 *)
+(*YCHFrecuencia a la cual se quiere poner a trabajar la bomba*)
+LD    TRUE
+MOVE    mReg1959, FreqPump
+(* Network 7 *)
+(*YCHConfiguración de timersEnable de timers [ byte -> timer8,timer7,timer6,timer5,timer4,timer3,timer2,timer1]*)
+LD    TRUE
+I_TO_B    mReg1982, %MB103
+(* Network 8 *)
+(*YCHPROGRAMACIÓN SEMANALTimer1Week -> [byte -> null,Sun,Sat,Fri,Thr,Wed,Tues,Mon]*)
+LD    TRUE
+I_TO_B    mReg1983, %MB104
+(* Network 9 *)
+(*YCHPROGRAMACIÓN SEMANALTimer2Week -> [byte -> null,Sun,Sat,Fri,Thr,Wed,Tues,Mon]*)
+LD    TRUE
+I_TO_B    mReg1984, %MB105
+(* Network 10 *)
+(*YCHPROGRAMACIÓN SEMANALTimer3Week -> [byte -> null,Sun,Sat,Fri,Thr,Wed,Tues,Mon]*)
+LD    TRUE
+I_TO_B    mReg1985, %MB106
+(* Network 11 *)
+(*YCHPROGRAMACIÓN SEMANALTimer4Week -> [byte -> null,Sun,Sat,Fri,Thr,Wed,Tues,Mon]*)
+LD    TRUE
+I_TO_B    mReg1986, %MB107
+(* Network 12 *)
+(*YCHPROGRAMACIÓN SEMANALTimer5Week -> [byte -> null,Sun,Sat,Fri,Thr,Wed,Tues,Mon]*)
+LD    TRUE
+I_TO_B    mReg1987, %MB108
+(* Network 13 *)
+(*YCHPROGRAMACIÓN SEMANALTimer6Week -> [byte -> null,Sun,Sat,Fri,Thr,Wed,Tues,Mon]*)
+LD    TRUE
+I_TO_B    mReg1988, %MB109
+(* Network 14 *)
+(*YCHPROGRAMACIÓN SEMANALTimer7Week -> [byte -> null,Sun,Sat,Fri,Thr,Wed,Tues,Mon]*)
+LD    TRUE
+I_TO_B    mReg1989, %MB110
+(* Network 15 *)
+(*YCHPROGRAMACIÓN SEMANALTimer8Week -> [byte -> null,Sun,Sat,Fri,Thr,Wed,Tues,Mon]*)
+LD    TRUE
+I_TO_B    mReg1990, %MB111
+(* Network 16 *)
+(*YCHTIMER 1Hora de prendido*)
+LD    TRUE
+I_TO_B    mReg1991, t1HourStart
+(* Network 17 *)
+(*YCHTIMER 1Minuto de prendido*)
+LD    TRUE
+I_TO_B    mReg1992, t1MinStart
+(* Network 18 *)
+(*YCHTIMER 1Hora de apagado*)
+LD    TRUE
+I_TO_B    mReg1993, t1HourStop
+(* Network 19 *)
+(*YCHTIMER 1Minuto de apagado*)
+LD    TRUE
+I_TO_B    mReg1994, t1MinStop
+(* Network 20 *)
+(*YCHTIMER 2Hora de prendido*)
+LD    TRUE
+I_TO_B    mReg1995, t2HourStart
+(* Network 21 *)
+(*YCHTIMER 2Minuto de prendido*)
+LD    TRUE
+I_TO_B    mReg1996, t2MinStart
+(* Network 22 *)
+(*YCHTIMER 2Hora de apagado*)
+LD    TRUE
+I_TO_B    mReg1997, t2HourStop
+(* Network 23 *)
+(*YCHTIMER 2Minuto de apagado*)
+LD    TRUE
+I_TO_B    mReg1998, t2MinStop
+(* Network 24 *)
+(*YCHTIMER 3Hora de prendido*)
+LD    TRUE
+I_TO_B    mReg1999, t3HourStart
+(* Network 25 *)
+(*YCHTIMER 3Minuto de prendido*)
+LD    TRUE
+I_TO_B    mReg2000, t3MinStart
+(* Network 26 *)
+(*YCHTIMER 3Hora de apagado*)
+LD    TRUE
+I_TO_B    mReg2001, t3HourStop
+(* Network 27 *)
+(*YCHTIMER 3Minuto de apagado*)
+LD    TRUE
+I_TO_B    mReg2002, t3MinStop
+(* Network 28 *)
+(*YCHTIMER 4Hora de prendido*)
+LD    TRUE
+I_TO_B    mReg2003, t4HourStart
+(* Network 29 *)
+(*YCHTIMER 4Minuto de prendido*)
+LD    TRUE
+I_TO_B    mReg2004, t4MinStart
+(* Network 30 *)
+(*YCHTIMER 4Hora de apagado*)
+LD    TRUE
+I_TO_B    mReg2005, t4HourStop
+(* Network 31 *)
+(*YCHTIMER 4Minuto de apagado*)
+LD    TRUE
+I_TO_B    mReg2006, t4MinStop
+(* Network 32 *)
+(*YCHTIMER 5Hora de prendido*)
+LD    TRUE
+I_TO_B    mReg2007, t5HourStart
+(* Network 33 *)
+(*YCHTIMER 5Minuto de prendido*)
+LD    TRUE
+I_TO_B    mReg2008, t5MinStart
+(* Network 34 *)
+(*YCHTIMER 5Hora de apagado*)
+LD    TRUE
+I_TO_B    mReg2009, t5HourStop
+(* Network 35 *)
+(*YCHTIMER 5Minuto de apagado*)
+LD    TRUE
+I_TO_B    mReg2010, t5MinStop
+(* Network 36 *)
+(*YCHTIMER 6Hora de prendido*)
+LD    TRUE
+I_TO_B    mReg2011, t6HourStart
+(* Network 37 *)
+(*YCHTIMER 6Minuto de prendido*)
+LD    TRUE
+I_TO_B    mReg2012, t6MinStart
+(* Network 38 *)
+(*YCHTIMER 6Hora de apagado*)
+LD    TRUE
+I_TO_B    mReg2013, t6HourStop
+(* Network 39 *)
+(*YCHTIMER 6Minuto de apagado*)
+LD    TRUE
+I_TO_B    mReg2014, t6MinStop
+(* Network 40 *)
+(*YCHTIMER 7Hora de prendido*)
+LD    TRUE
+I_TO_B    mReg2015, t7HourStart
+(* Network 41 *)
+(*YCHTIMER 7Minuto de prendido*)
+LD    TRUE
+I_TO_B    mReg2016, t7MinStart
+(* Network 42 *)
+(*YCHTIMER 7Hora de apagado*)
+LD    TRUE
+I_TO_B    mReg2017, t7HourStop
+(* Network 43 *)
+(*YCHTIMER 7Minuto de apagado*)
+LD    TRUE
+I_TO_B    mReg2018, t7MinStop
+(* Network 44 *)
+(*YCHTIMER 8Hora de prendido*)
+LD    TRUE
+I_TO_B    mReg2019, t8HourStart
+(* Network 45 *)
+(*YCHTIMER 8Minuto de prendido*)
+LD    TRUE
+I_TO_B    mReg2020, t8MinStart
+(* Network 46 *)
+(*YCHTIMER 8Hora de apagado*)
+LD    TRUE
+I_TO_B    mReg2021, t8HourStop
+(* Network 47 *)
+(*YCHTIMER 8Minuto de apagado*)
+LD    TRUE
+I_TO_B    mReg2022, t8MinStop

@@ -1,0 +1,29 @@
+(*2*)
+(* Network 0 *)
+(*YCHCORESubrutina que se encarga del fucionamiento de la lógica de programaciónNOTA: No se debe modificar este bloque mientras se desarrolla una aplicación*)
+LD    %SM0.0
+CAL    SBR00    TimerPoll
+(* Network 1 *)
+(*YCHDEFAULT CONFIGBloque que se ejecuta solo cuando se descarga el firmware del PLC. NOTA: Hay que descargarle el firmware con la opción:*)
+LDN    %V3648.1
+CAL    SBR14
+(* Network 2 *)
+(*YCHCONDICIONES INICIALESNOTA: Bloque que se ejecuta solo si ocurre un reinicio del sistema*)
+LD    %M100.0
+CAL    SBR01
+(* Network 3 *)
+(*YCHBloque que registra todas las señales que son entrada para el softwareNOTA: Este bloque se ejecuta siempre que no  se esté en modo debug*)
+LD    %M100.1
+CAL    SBR02
+(* Network 4 *)
+(*YCHSubrutina en donde se encuentra el software para nuestra appBloque que se ejecuta cada 15 seg.*)
+LD    %M100.3
+CAL    SBR03
+(* Network 5 *)
+(*YCHBloque que registra todas las señales que se generan como salida dell softwareNOTA: Este bloque se ejecuta siempre que no  se esté en modo debug*)
+LD    %M100.2
+CAL    SBR04
+(* Network 6 *)
+(*YCH*)
+LD    %SM0.0
+CAL    SBR38    681, 1000, serial_endRx

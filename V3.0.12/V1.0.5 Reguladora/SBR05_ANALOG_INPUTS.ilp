@@ -1,0 +1,7 @@
+(*2*)
+(* Network 0 *)
+(*YCHREAD ANALOG INPUTSLeo las entradas analogicas mediante un proceso de multiplexadoAI0, AI1*)
+LD    TRUE
+CAL    SBR13    ReadAin, AI0, AI1, AInBusy, %Q0.4
+CAL    SBR22    AI0_Mmax, AI0, AI0_Mmin, AI0_Imax, AI0_Imin, AI0Offset, AI0_Alarm, AI0_AlrLow, AI0_mag, AI0_AlrHigh
+CAL    SBR23    AI1_Mmax, AI1, AI1_Mmin, AI1_Imax, AI1_Imin, AI1Offset, AI1_Alarm, AI1_AlrLow, AI1_mag, AI1_AlrHigh

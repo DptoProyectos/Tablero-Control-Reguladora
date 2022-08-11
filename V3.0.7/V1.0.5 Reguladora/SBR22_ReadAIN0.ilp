@@ -1,0 +1,29 @@
+(*2*)
+(* Network 0 *)
+(*YCHCalculo el valor de la magnitud del sensorValido la medida solo si los rangos en mA se encuentran entre IMIN e IMAX*)
+LD    TRUE
+MOVE    IMIN, int0
+MUL    1000, int0
+MOVE    IMAX, int1
+MUL    1000, int1
+LINCO    int0, int1, MMIN, MMAX, 1.0, AIN, dint0, real0
+GE    AIN, int0
+LE    AIN, int1
+MOVE    real0, AO
+ADD    OFFSET, AO
+(* Network 1 *)
+(*YCHIndico magnitud de corriente del sensor fuera de los rangos de entrada por overload*)
+LD    TRUE
+GT    AIN, int1
+ST   HIG
+(* Network 2 *)
+(*YCHIndico magnitud de corriente del sensor fuera de los rangos de entrada por underload*)
+LD    TRUE
+LT    AIN, int0
+ST   LOW
+(* Network 3 *)
+(*activación de alarma cuando pasen 5 segundos calor fuera de rango*)
+LD    LOW
+OR    HIG
+TON   T4, 500
+ST   ALAR

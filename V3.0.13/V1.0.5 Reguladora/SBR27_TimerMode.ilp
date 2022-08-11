@@ -1,0 +1,9 @@
+(*2*)
+(* Network 0 *)
+(*YCHIndico el modo en el que estoy trabajando0 -> EMERGENCIA 1 -> LOCAL2 -> REMOTO3 -> AUTOMATICO4 -> TIMER*)
+LD    TRUE
+MOVE    4, WorkingMode
+(* Network 1 *)
+(*YCHBloque que se encarga de manejar la programación de activacion de las salidas*)
+LD    TRUE
+CAL    SBR26

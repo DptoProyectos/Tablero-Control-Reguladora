@@ -1,0 +1,21 @@
+(*2*)
+(* Network 0 *)
+(*YCHLimpio el buffer para una recepción de datos*)
+LD    TRUE
+FILL  B#0, serial_buffData, B#255
+(* Network 1 *)
+(*YCHElimino la interrupcion SerialEndRxHeader*)
+LD    TRUE
+DTCH    31
+(* Network 2 *)
+(*YCHCreo una interrupcion para leer y escribir los registro modbus que me vienen en la respuesta*)
+LD    TRUE
+ATCH    INT00, 31
+(* Network 3 *)
+(*YCHMe preparo para recibir los bytes de payload*)
+LD    %SM0.0
+MOVE    B#255, %SMB194
+(* Network 4 *)
+(*YCHRecibo los bytes de payload y sobreescribo la cabecera*)
+LD    %SM0.0
+RCV    serial_buffData, 1

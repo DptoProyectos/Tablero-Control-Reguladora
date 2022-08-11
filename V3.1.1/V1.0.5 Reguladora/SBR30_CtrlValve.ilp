@@ -1,0 +1,104 @@
+(*2*)
+(* Network 0 *)
+(*YCHACOMPLE DE TIEMPOSSe multiplican por 10 los tiempos de entrada ya que el timer tiene resolución de 100 ms*)
+LD    TRUE
+MOVE    TimeOpen, int1
+MUL    10, int1
+MOVE    TimeClos, int2
+MUL    10, int2
+(* Network 1 *)
+(*YCHLOGICA DE APERTURA DE VÁLVULADoy la orden de abrir a la logica de apertura*)
+LD    TRUE
+AND(
+LD    Act
+ANDN    %V3648.2
+OR(
+LD    Act
+R_TRIG
+)
+)
+S    opening
+S    CtrlOpen
+R    CtrlClos
+R    clossing
+(* Network 2 *)
+(*YCHLOGICA DE APERTURA DE VÁLVULAEspero el tiempo para completar la apertura y apago la lógica de apertura*)
+LD    opening
+TON   T86, int1
+__CR_EQ_1
+MOVE    T86, int0
+__CR_RESTORE
+R    opening
+R    CtrlOpen
+R    CtrlClos
+S    %V3648.2
+(* Network 3 *)
+(*YCHLOGICA DE CIERRE DE VÁLVULADoy la orden de cerrar a la logica de cierre*)
+LD    TRUE
+AND(
+LDN    Act
+AND    %V3648.2
+OR(
+LD    Act
+F_TRIG
+)
+)
+S    clossing
+R    CtrlOpen
+S    CtrlClos
+R    opening
+(* Network 4 *)
+(*YCHLOGICA DE CIERRE DE VÁLVULAEspero el tiempo para completar el cierre y apago la lógica de cierre*)
+LD    clossing
+TON   T87, int2
+__CR_EQ_1
+MOVE    T87, int0
+__CR_RESTORE
+R    clossing
+R    CtrlOpen
+R    CtrlClos
+R    %V3648.2
+(* Network 5 *)
+(*YCHSi está en medio de un proceso tanto de apertura como cierre digo que la válvula está ocupada*)
+LD    clossing
+OR    opening
+ST   valBusy
+(* Network 6 *)
+(*YCHtimer que cuenta el tiempo de espera*)
+LDN    valBusy
+ANDN    toggle
+TON   T88, Time2Check
+__CR_EQ_1
+MOVE    T88, timer88
+__CR_RESTORE
+S    toggle
+(* Network 7 *)
+(*YCHtimer que cuenta el tiempo de accion*)
+LDN    valBusy
+AND    toggle
+TON   T89, Time2Set
+__CR_EQ_1
+MOVE    T89, timer89
+__CR_RESTORE
+R    toggle
+(* Network 8 *)
+(*YCHActivacion de la salida de control para el cierre por inicio del timer de timer2check*)
+LD    toggle
+R_TRIG
+ANDN    valBusy
+ANDN    %V3648.2
+S    CtrlClos
+(* Network 9 *)
+(*YCHActivacion de la salida de control para la apertura por inicio del timer de timer2check*)
+LD    toggle
+R_TRIG
+ANDN    valBusy
+AND    %V3648.2
+S    CtrlOpen
+(* Network 10 *)
+(*YCHDesactivacion de las salidas debido al fin de timer2check*)
+LD    toggle
+F_TRIG
+ANDN    valBusy
+R    CtrlOpen
+R    CtrlClos

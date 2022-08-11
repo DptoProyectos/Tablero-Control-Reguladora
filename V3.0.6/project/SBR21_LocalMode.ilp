@@ -1,0 +1,21 @@
+(*2*)
+(* Network 0 *)
+(*YCHIndico el modo en el que estoy trabajando0 -> EMERGENCIA 1 -> LOCAL2 -> REMOTO3 -> AUTOMATICO*)
+LD    TRUE
+MOVE    1, WorkingMode
+(* Network 1 *)
+(*YCHTomo el control de las salidas*)
+LD    TRUE
+S    %M102.3
+(* Network 2 *)
+(*YCHSi estoy en modo local y mando a abrir ejecuto la logica de apertura*)
+LD    %M101.6
+AND    %M112.4
+MOVE    101, mReg1935
+S    %M112.3
+(* Network 3 *)
+(*YCHSi estoy en modo local y mando a cerrar ejecuto la logica de cerrado*)
+LD    %M101.6
+ANDN    %M112.4
+MOVE    100, mReg1935
+R    %M112.3

@@ -1,0 +1,14 @@
+VAR_INPUT
+    enChar1  AT  %L4.4 : BOOL ; (*  *) 
+    enChar2  AT  %L4.5 : BOOL ; (*  *) 
+    enChar3  AT  %L4.6 : BOOL ; (*  *) 
+    enChar4  AT  %L4.7 : BOOL ; (*  *) 
+    enChar5  AT  %L5.0 : BOOL ; (*  *) 
+    enChar6  AT  %L5.1 : BOOL ; (*  *) 
+    Char1  AT  %LB231 : BYTE ; (*  *) 
+    Char2  AT  %LB240 : BYTE ; (*  *) 
+    Char3  AT  %LB241 : BYTE ; (*  *) 
+    Char4  AT  %LB242 : BYTE ; (*  *) 
+    Char5  AT  %LB243 : BYTE ; (*  *) 
+    Char6  AT  %LB244 : BYTE ; (*  *) 
+END_VAR

@@ -1,0 +1,290 @@
+(*2*)
+(* Network 0 *)
+(*YCHArranco por el estado cero*)
+LD    start
+R_TRIG
+MOVE    B#0, SetRcvData_State
+R    start
+(* Network 1 *)
+(*YCHAlmaceno la dirección del buffer de procesos para que pueda ser utilizada en otroas subrutinas*)
+LD    TRUE
+MOVE    buffProc, SetRcvData_BfPro
+(* Network 2 *)
+(*YCHSTATE_0Preparo puntero*)
+LD    TRUE
+EQ    SetRcvData_State, B#0
+MOVE    &VB0, %VD500
+I_TO_DI    buffAdd, dint0
+ADD    dint0, %VD500
+MOVE    B#1, SetRcvData_State
+(* Network 3 *)
+(*YCHSTATE_1Se verifica el caracter [ < ]*)
+LD    TRUE
+EQ    SetRcvData_State, B#1
+AND(
+LD    TRUE
+EQ    *VD500, B#60
+MOVE    B#2, SetRcvData_State
+OR(
+LD    TRUE
+NE    *VD500, B#60
+MOVE    B#1, SetRcvData_State
+)
+)
+INC    %VD500
+(* Network 4 *)
+(*YCHSTATE_2Se verifica el caracter [ h ]*)
+LD    TRUE
+EQ    SetRcvData_State, B#2
+AND(
+LD    TRUE
+EQ    *VD500, B#104
+MOVE    B#3, SetRcvData_State
+OR(
+LD    TRUE
+NE    *VD500, B#104
+MOVE    B#1, SetRcvData_State
+)
+)
+INC    %VD500
+(* Network 5 *)
+(*YCHSTATE_3Se verifica el caracter [ 1 ]*)
+LD    TRUE
+EQ    SetRcvData_State, B#3
+AND(
+LD    TRUE
+EQ    *VD500, B#49
+MOVE    B#4, SetRcvData_State
+OR(
+LD    TRUE
+NE    *VD500, B#49
+MOVE    B#1, SetRcvData_State
+)
+)
+INC    %VD500
+(* Network 6 *)
+(*YCHSTATE_4Se verifica el caracter [ > ]*)
+LD    TRUE
+EQ    SetRcvData_State, B#4
+AND(
+LD    TRUE
+EQ    *VD500, B#62
+MOVE    B#5, SetRcvData_State
+OR(
+LD    TRUE
+NE    *VD500, B#62
+MOVE    B#1, SetRcvData_State
+)
+)
+INC    %VD500
+(* Network 7 *)
+(*YCHSTATE_5Se lee la fecha y hora*)
+LD    TRUE
+EQ    SetRcvData_State, B#5
+AND(
+LD    TRUE
+CAL    SBR35
+FILL  B#0, SetRcvData_HexD, B#8
+A_TO_H  SetRcvData_StrD, SetRcvData_HexD, SetRcvData_NoCha
+CAL    SBR34
+OR(
+LD    TRUE
+B_TO_I    SetRcvData_byte0, int6
+B_TO_I    SetRcvData_byte1, int7
+MOVE    int6, int8
+MUL    10, int8
+MOVE    int8, int9
+ADD    int7, int9
+I_TO_B    int9, SetRTCYear
+)
+OR(
+LD    TRUE
+B_TO_I    SetRcvData_byte2, int6
+B_TO_I    SetRcvData_byte3, int7
+MOVE    int6, int8
+MUL    10, int8
+MOVE    int8, int9
+ADD    int7, int9
+I_TO_B    int9, SetRTCMonth
+)
+OR(
+LD    TRUE
+B_TO_I    SetRcvData_byte4, int6
+B_TO_I    SetRcvData_byte5, int7
+MOVE    int6, int8
+MUL    10, int8
+MOVE    int8, int9
+ADD    int7, int9
+I_TO_B    int9, SetRTCDay
+)
+OR(
+LD    TRUE
+B_TO_I    SetRcvData_byte6, int6
+B_TO_I    SetRcvData_byte7, int7
+MOVE    int6, int8
+MUL    10, int8
+MOVE    int8, int9
+ADD    int7, int9
+I_TO_B    int9, SetRTCHour
+)
+OR(
+LD    TRUE
+B_TO_I    SetRcvData_byte8, int6
+B_TO_I    SetRcvData_byte9, int7
+MOVE    int6, int8
+MUL    10, int8
+MOVE    int8, int9
+ADD    int7, int9
+I_TO_B    int9, SetRTCMin
+)
+)
+MOVE    B#6, SetRcvData_State
+(* Network 8 *)
+(*YCHSTATE_6Decodificar registro modbus*)
+LD    TRUE
+EQ    SetRcvData_State, B#6
+AND(
+LDN    %M113.4
+AND(
+LD    TRUE
+INC    %VD500
+CAL    SBR35
+OR(
+LD    TRUE
+FILL  B#0, SetRcvData_HexD, B#8
+A_TO_H  SetRcvData_StrD, SetRcvData_HexD, SetRcvData_NoCha
+)
+OR(
+LD    TRUE
+FILL  B#0, SetRcvData_byte0, B#16
+CAL    SBR34
+)
+OR(
+LD    TRUE
+CAL    SBR32    SetRcvData_Reg, realtr
+)
+)
+MOVE    B#7, SetRcvData_State
+OR(
+LD    %M113.4
+MOVE    B#100, SetRcvData_State
+)
+)
+(* Network 9 *)
+(*YCHSTATE_7Decodificar valor*)
+LD    TRUE
+EQ    SetRcvData_State, B#7
+AND(
+LD    TRUE
+INC    %VD500
+CAL    SBR35
+OR(
+LD    TRUE
+FILL  B#0, SetRcvData_HexD, B#8
+A_TO_H  SetRcvData_StrD, SetRcvData_HexD, SetRcvData_NoUni
+)
+OR(
+LD    TRUE
+FILL  B#0, SetRcvData_HexUn, B#8
+A_TO_H  SetRcvData_StrUn, SetRcvData_HexUn, SetRcvData_NoDec
+)
+OR(
+LD    TRUE
+FILL  B#0, SetRcvData_byte0, B#16
+CAL    SBR34
+)
+OR(
+LD    TRUE
+CAL    SBR32    SetRcvData_Un, SetRcvData_Dec
+)
+)
+MOVE    B#8, SetRcvData_State
+(* Network 10 *)
+(*YCHSTATE_8ESCRIBIR REGISTRO1- Convierto el registro modbus a direccion de memoria2- Establezco rangos validos de memoria [40-4095]3- En caso de que el dato que se quiera escribir sea entero escribo un word [0-65535].4- En caso de que el dato que se quiera escribir sea un real lo escribo tal cual*)
+LD    TRUE
+EQ    SetRcvData_State, B#8
+AND(
+LD    TRUE
+R_TO_DI    SetRcvData_Reg, dint0
+MUL    DI#2, dint0
+MOVE    dint0, SetRcvData_Add
+SUB    DI#200, SetRcvData_Add
+OR(
+LD    TRUE
+GE    SetRcvData_Add, DI#40
+LE    SetRcvData_Add, DI#4095
+AND(
+LDN    %M113.2
+AND(
+LD    TRUE
+MOVE    &VW0, %VD528
+OR(
+LD    TRUE
+ADD    SetRcvData_Add, %VD528
+)
+)
+R_TO_DI    SetRcvData_Un, dint0
+LE    dint0, DI#65535
+MOVE    dint0, *VD528
+OR(
+LD    %M113.2
+AND(
+LD    TRUE
+MOVE    &VR0, %VD528
+OR(
+LD    TRUE
+ADD    SetRcvData_Add, %VD528
+)
+)
+AND(
+LD    TRUE
+B_TO_I    SetRcvData_NoDec, int1
+OR(
+LD    TRUE
+I_TO_DI    int1, dint1
+)
+OR(
+LD    TRUE
+DI_TO_R    dint1, real1
+)
+OR(
+LD    TRUE
+MOVE    0.0, real2
+SUB    real1, real2
+)
+OR(
+LD    TRUE
+CAL    SBR31    real2, real3
+)
+OR(
+LD    TRUE
+MOVE    real3, real4
+MUL    SetRcvData_Dec, real4
+)
+)
+R_TO_DI    SetRcvData_Un, dint3
+DI_TO_R    dint3, real3
+MOVE    real3, real5
+ADD    real4, real5
+AND(
+LD    %M113.3
+MOVE    0.0, real6
+SUB    real5, real6
+OR(
+LDN    %M113.3
+MOVE    0.0, real6
+ADD    real5, real6
+)
+)
+MOVE    real6, *VD528
+)
+)
+)
+)
+MOVE    B#6, SetRcvData_State
+R    %M113.2
+R    %M113.3
+(* Network 11 *)
+(*YCHSTATE_8SCAN DEL FRAME DE RESPUESTA COMPLETADO*)
+LD    TRUE
+EQ    SetRcvData_State, B#100

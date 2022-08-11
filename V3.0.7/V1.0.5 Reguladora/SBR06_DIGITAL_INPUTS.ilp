@@ -1,0 +1,29 @@
+(*2*)
+(* Network 0 *)
+(*YCHModo local desde el tablero*)
+LD    %I0.0
+ST   %M101.6
+(* Network 1 *)
+(*YCHValor de entrada digital  de estado ST0*)
+LD    %I0.1
+ST   %M101.7
+(* Network 2 *)
+(*YCHSwitch de acción*)
+LD    %I0.4
+ST   %M112.4
+(* Network 3 *)
+(*YCHModulo que te calcula el tiempo en ms que hay entre un pulso y otro en la entrada contador CNT0*)
+LD    TRUE
+CAL    SBR15    TimePulseOn, %I0.2, PulseReset, TimePulseOff, PulseTime, int0
+(* Network 4 *)
+(*YCHModulo para contar el acumulado de todos los pulsos en la entrada contador CNT0*)
+LD    TRUE
+CAL    SBR16    TimePulseOn, %I0.2, TimePulseOff, PulseCount
+(* Network 5 *)
+(*YCHModulo que te calcula el tiempo en ms que hay entre un pulso y otro en la entrada contador CNT1*)
+LD    TRUE
+CAL    SBR25    TimePulseOn1, %I0.3, PulseReset1, TimePulseOff1, PulseTime1, int0
+(* Network 6 *)
+(*YCHModulo para contar todos los pulsos del contador de UTE*)
+LD    TRUE
+CAL    SBR24    TimePulseOn1, %I0.3, TimePulseOff1, PulseCount1

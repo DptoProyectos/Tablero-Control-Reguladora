@@ -1,0 +1,210 @@
+(*2*)
+(* Network 0 *)
+(*YCHGarantizo que cuando se reinicie el software el debug quede en ceroVoy para el estado cero de mi máquina de estados para arrancar con el software*)
+LD    %SM0.1
+MOVE    0, State
+R    %M0.7
+(* Network 1 *)
+(*YCHCondicion para activar el bloque de condiciones iniciales*)
+LDN    %M0.7
+AND    %SM0.1
+ST   %M100.0
+(* Network 2 *)
+(*YCHCondición para ejecutar el bloque de configuraciones iniciales. Solo se ejecuta una vez cuando se descarga el soft del PLC*)
+LDN    %V3648.1
+TON   T12, 1
+__CR_EQ_1
+MOVE    T12, int0
+__CR_RESTORE
+S    %V3648.1
+(* Network 3 *)
+(*YCHCondiciones para activar los siguientes bloques:- Señales de entrada al software desde el HMI: RD_HMI- Señales de entrada al sofware proveniente de periféricos (Excepto HMI): DRV_IN*)
+LDN    %M0.7
+ST   %M100.1
+ST   %M100.2
+ST   %M102.7
+(* Network 4 *)
+(*YCHEn modo debug el software no se ejecuta*)
+LD    %M0.7
+R    %M100.3
+(* Network 5 *)
+(*YCHSi no se está en el estado 100 es se dice que se está ejecutando el softwre de la app*)
+LDN    %M0.7
+NE    State, 100
+S    %M100.3
+(* Network 6 *)
+(*Espero 1ms antes de pasar el estado WAITING para poder resetear los timers del software*)
+LDN    %M0.7
+EQ    State, 100
+TON   T1, 1
+__CR_EQ_1
+MOVE    T1, int0
+__CR_RESTORE
+R    %M100.3
+(* Network 7 *)
+(*YCHWAITINGCuento que pasa ejecutándose el software*)
+LDN    %M0.7
+AND(
+LDN    %SM0.1
+AND(
+LD    %M100.3
+AND(
+LDN    %M100.4
+TON   T20, 5
+__CR_EQ_1
+MOVE    T20, int0
+__CR_RESTORE
+ALT    toggle0
+OR(
+LD    %M100.4
+TON   T21, 5
+__CR_EQ_1
+MOVE    T21, int1
+__CR_RESTORE
+ALT    toggle0
+LT    SoftCoun, DI#2147483647
+INC    SoftCoun
+)
+)
+OR(
+LDN    %M100.3
+R_TRIG
+MOVE    SoftCoun, SoftTime
+MOVE    DI#0, SoftCoun
+R_BLK    1, toggle0
+)
+)
+OR(
+LD    %SM0.1
+MOVE    DI#0, SoftCoun
+R_BLK    1, toggle0
+)
+)
+(* Network 8 *)
+(*YCHWAITINGCalculo cuanto tiiempo tengo que esperar antes de volver a ejecutar el bloque de software para poder cumplir un tpolly espero el mismo para cumplir los ciclos de tiempo*)
+LDN    %M0.7
+AND(
+LDN    %SM0.1
+AND(
+LDN    %M100.3
+AND(
+LD    TRUE
+GE    TimPoll, SoftTime
+MOVE    TimPoll, t4wait
+SUB    SoftTime, t4wait
+OR(
+LD    TRUE
+LT    TimPoll, SoftTime
+MOVE    DI#0, t4wait
+)
+OR(
+LDN    %M100.5
+TON   T22, 5
+__CR_EQ_1
+MOVE    T22, int0
+__CR_RESTORE
+ALT    toggle1
+)
+OR(
+LD    %M100.5
+TON   T23, 5
+__CR_EQ_1
+MOVE    T23, int1
+__CR_RESTORE
+ALT    toggle1
+LT    WaitCoun, DI#2147483647
+INC    WaitCoun
+GE    WaitCoun, t4wait
+MOVE    0, State
+)
+)
+OR(
+LD    %M100.3
+R_TRIG
+MOVE    DI#0, WaitCoun
+R_BLK    1, toggle1
+)
+)
+OR(
+LD    %SM0.1
+MOVE    DI#0, WaitCoun
+R_BLK    1, toggle1
+)
+)
+(* Network 9 *)
+(*YCHMODO DEBUGLeo continuamente las entradas analógicas para refrescarlas en el HMI*)
+LD    %M0.7
+AND(
+LDN    %M0.0
+TON   T24, 1
+__CR_EQ_1
+MOVE    T24, int0
+__CR_RESTORE
+S_BLK    1, ReadAin
+AND    %M100.7
+F_TRIG
+R_BLK    1, ReadAin
+S_BLK    1, bool0
+OR(
+LD    %M0.0
+TON   T25, 1
+__CR_EQ_1
+MOVE    T25, int1
+__CR_RESTORE
+S_BLK    1, ReadAin
+AND    %M100.7
+F_TRIG
+R_BLK    1, ReadAin
+R_BLK    1, bool0
+)
+OR(
+LD    %M0.6
+S_BLK    1, DrvInput
+)
+)
+(* Network 10 *)
+(*YCHRead de RTC Time*)
+LD    TRUE
+RTC_R    RTCFMT, RTC_Week, RTC_Second, RTC_Minute, RTC_Hour, RTC_Day, RTC_Month, RTC_Year, RTC_Century
+(* Network 11 *)
+(*YCHSet RTC TimeSeteo de hora*)
+LD    TRUE
+NE    SetRTCHour, B#0
+RTC_W    RTCFMT, RTC_Week, RTC_Second, RTC_Minute, SetRTCHour, RTC_Day, RTC_Month, RTC_Year, RTC_Century
+MOVE    B#0, SetRTCHour
+(* Network 12 *)
+(*YCHSet RTC TimeSeteo de minuto*)
+LD    TRUE
+NE    SetRTCMin, B#0
+RTC_W    RTCFMT, RTC_Week, RTC_Second, SetRTCMin, RTC_Hour, RTC_Day, RTC_Month, RTC_Year, RTC_Century
+MOVE    B#0, SetRTCMin
+(* Network 13 *)
+(*YCHSet RTC TimeSeteo de día de la semana*)
+LD    TRUE
+NE    SetRTCWeek, B#0
+RTC_W    RTCFMT, SetRTCWeek, RTC_Second, RTC_Minute, RTC_Hour, RTC_Day, RTC_Month, RTC_Year, RTC_Century
+MOVE    B#0, SetRTCWeek
+(* Network 14 *)
+(*YCHSet RTC TimeSeteo del día*)
+LD    TRUE
+NE    SetRTCDay, B#0
+RTC_W    RTCFMT, RTC_Week, RTC_Second, RTC_Minute, RTC_Hour, SetRTCDay, RTC_Month, RTC_Year, RTC_Century
+MOVE    B#0, SetRTCDay
+(* Network 15 *)
+(*YCHSet RTC TimeSeteo del mes*)
+LD    TRUE
+NE    SetRTCMonth, B#0
+RTC_W    RTCFMT, RTC_Week, RTC_Second, RTC_Minute, RTC_Hour, RTC_Day, SetRTCMonth, RTC_Year, RTC_Century
+MOVE    B#0, SetRTCMonth
+(* Network 16 *)
+(*YCHSet RTC TimeSeteo del año*)
+LD    TRUE
+NE    SetRTCYear, B#0
+RTC_W    RTCFMT, RTC_Week, RTC_Second, RTC_Minute, RTC_Hour, RTC_Day, RTC_Month, SetRTCYear, RTC_Century
+MOVE    B#0, SetRTCYear
+(* Network 17 *)
+(*YCHSet RTC TimeSeteo del centenario*)
+LD    TRUE
+NE    SetRTCCent, B#0
+RTC_W    RTCFMT, RTC_Week, RTC_Second, RTC_Minute, RTC_Hour, RTC_Day, RTC_Month, RTC_Year, SetRTCCent
+MOVE    B#0, SetRTCCent

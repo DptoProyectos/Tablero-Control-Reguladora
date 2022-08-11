@@ -1,0 +1,17 @@
+(*2*)
+(* Network 0 *)
+(*YCHBloque para acoplar las entradas analogicas con las entradas de nuestro software*)
+LD    TRUE
+CAL    SBR05
+(* Network 1 *)
+(*YCHBloque para acoplar las entradas digitales con las entradas de nuestro software*)
+LD    TRUE
+CAL    SBR06
+(* Network 2 *)
+(*YCHBloque para acoplar las entradas MODBUS con las entradas de nuestro software*)
+LD    TRUE
+CAL    SBR07
+(* Network 3 *)
+(*YCHBloque para acoplar las entradas desde el HMI con las entradas de nuestro software*)
+LD    TRUE
+CAL    SBR08

@@ -1,0 +1,77 @@
+(*2*)
+(* Network 0 *)
+(*YCHSe pone el valor -999999.0 para indicar que no hay datos en el registro modbus de entrada*)
+LD    %SM0.1
+MOVE    -999999.0, RefIn1
+MOVE    -999999.0, RefIn2
+(* Network 1 *)
+(*YCHSi tengo un valor válido de entrada en la referencia 1 lo pongo en la salida*)
+LD    TRUE
+NE    RefIn1, -999999.0
+GE    RefIn1, LMinRef1
+LE    RefIn1, LMaxRef1
+MOVE    RefIn1, RefOut
+ADD    Ref1Offset, RefOut
+TON   T84, 1
+__CR_EQ_1
+MOVE    T84, int0
+__CR_RESTORE
+MOVE    -999999.0, RefIn1
+(* Network 2 *)
+(*YCHSi tengo un valor válido de entrada en la referencia 2 lo pongo en un registro temporal*)
+LD    TRUE
+NE    RefIn2, -999999.0
+GE    RefIn2, LMinRef2
+LE    RefIn2, LMaxRef2
+MOVE    RefIn2, ref2Temp
+TON   T85, 1
+__CR_EQ_1
+MOVE    T85, int0
+__CR_RESTORE
+MOVE    -999999.0, RefIn2
+(* Network 3 *)
+(*YCHCuando lleva mas de 10 min sin actualizar el valor de la referencia 1 digo que hay error Tx en dicha referencia y uso la referencia 2*)
+LD    TRUE
+AND(
+LD    TRUE
+EQ    RefIn1, -999999.0
+OR(
+LD    TRUE
+LT    RefIn1, LMinRef1
+)
+OR(
+LD    TRUE
+GT    RefIn1, LMaxRef1
+)
+)
+TON   T82, 6000
+__CR_EQ_1
+MOVE    T82, tOffRef1
+__CR_RESTORE
+ST   eRef1
+(* Network 4 *)
+(*YCHCuando lleva mas de 10 min sin actualizar el valor de la referencia 2 digo que hay error Tx en dicha referencia*)
+LD    TRUE
+AND(
+LD    TRUE
+EQ    RefIn2, -999999.0
+OR(
+LD    TRUE
+LT    RefIn2, LMinRef2
+)
+OR(
+LD    TRUE
+GT    RefIn2, LMaxRef2
+)
+)
+TON   T83, 6000
+__CR_EQ_1
+MOVE    T83, tOffRef2
+__CR_RESTORE
+ST   eRef2
+(* Network 5 *)
+(*YCHSi hay error tx en la referencia 1 y la ref2 se mantiene sin error se pone el último valor de referencia 2 en la salida*)
+LD    eRef1
+ANDN    eRef2
+MOVE    ref2Temp, RefOut
+ADD    Ref2Offset, RefOut

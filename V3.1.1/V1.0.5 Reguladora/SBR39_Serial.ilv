@@ -1,0 +1,7 @@
+VAR_INPUT
+    buffAddr  AT  %LW250 : INT ; (* Dirección del buffer (0-255) *) 
+    tmpAddr  AT  %LW252 : INT ; (* Dirección del buffer de datos temporales. *) 
+END_VAR
+VAR_IN_OUT
+    tx  AT  %L5.3 : BOOL ; (* Señal para iniciar proceso de tx serial *) 
+END_VAR

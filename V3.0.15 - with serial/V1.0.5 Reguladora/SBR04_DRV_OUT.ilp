@@ -1,0 +1,21 @@
+(*2*)
+(* Network 0 *)
+(*YCHBloque para acoplar las salidas generados por nuestro software con las salidas analogicas*)
+LD    TRUE
+CAL    SBR09
+(* Network 1 *)
+(*YCHBloque para acoplar las salidas generados por nuestro software con las salidas digitales*)
+LD    TRUE
+CAL    SBR10
+(* Network 2 *)
+(*YCHBloque para acoplar las salidas generados por nuestro software con las salidas MODBUS*)
+LD    TRUE
+CAL    SBR11
+(* Network 3 *)
+(*YCHBloque para acoplar las salidas generados por nuestro software con las para el HMI*)
+LD    TRUE
+CAL    SBR12
+(* Network 4 *)
+(*YCHBloque que se encarga del envio de datos por el puerto serial*)
+LD    TRUE
+CAL    SBR39    681, 660, serialTxData

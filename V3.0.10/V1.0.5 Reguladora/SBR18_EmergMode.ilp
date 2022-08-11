@@ -1,0 +1,9 @@
+(*2*)
+(* Network 0 *)
+(*YCHIndico el modo en el que estoy trabajando0 -> EMERGENCIA 1 -> LOCAL2 -> REMOTO3 -> AUTOMATICO*)
+LD    TRUE
+MOVE    0, WorkingMode
+(* Network 1 *)
+(*YCHLe cedo el control al sistema de emergencia*)
+LD    TRUE
+R    %M102.3

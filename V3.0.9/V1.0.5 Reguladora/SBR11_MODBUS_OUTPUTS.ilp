@@ -1,0 +1,88 @@
+(*2*)
+(* Network 0 *)
+(*YCHModo actual de trabajo100 -> EMERGENCIA | 101 -> LOCAL | 102 -REMOTO | 103 -> AUTOMATICO | 104 -> TIMER*)
+LD    TRUE
+MOVE    WorkingMode, mReg2067
+ADD    100, mReg2067
+(* Network 1 *)
+(*YCHMando vía modbus el que se esta trabajando en modo local*)
+LD    %M101.6
+ST   %V4014.0
+(* Network 2 *)
+(*YCHMando vía modbus el estado de la válvula0 -> Cerrada1 -> Abierta*)
+LD    %V3648.2
+ST   %V4014.1
+(* Network 3 *)
+(*YCHAlarma del canal analogico 0*)
+LD    %M101.0
+ST   %V4014.2
+(* Network 4 *)
+(*YCHAlarma del canal analogico 1*)
+LD    %M101.3
+ST   %V4014.3
+(* Network 5 *)
+(*YCHAlarma de falla térmicaSe activa cuando se manda a prender la salida de control cero (OC0) y no se recibe estado en la entrada de estado siempre que no se esté enmodo local*)
+LDN    %M101.6
+AND    %M102.3
+AND    %M102.4
+ANDN    %M101.7
+ST   %V4014.4
+(* Network 6 *)
+(*YCHPongo los MSB de los registros modbus 2107 y 2108 en 0101 como validación de datos*)
+LD    TRUE
+R    %V4015.7
+S    %V4015.6
+R    %V4015.5
+S    %V4015.4
+R    %V4017.7
+S    %V4017.6
+R    %V4017.5
+S    %V4017.4
+(* Network 7 *)
+(*YCHIndicador de la válvula ocupada*)
+LD    %M112.2
+ST   %V4015.0
+(* Network 8 *)
+(*YCHEnvío vía modbus la señal del del canal analógico AI_0*)
+LD    TRUE
+MOVE    AI0_mag, mReg2069
+(* Network 9 *)
+(*YCHEnvío vía modbus la señal del del canal analógico AI_1*)
+LD    TRUE
+MOVE    AI1_mag, mReg2071
+(* Network 10 *)
+(*YCHSeñal de flujo en CNT0 (UND/h)*)
+LD    TRUE
+MOVE    FlowCNT0, mReg2075
+(* Network 11 *)
+(*YCHSeñal de volumen que pasa por CNT0 (UND)*)
+LD    TRUE
+MOVE    VolCNT0, mReg2073
+(* Network 12 *)
+(*YCHSeñal de flujo en CNT1 (UND/h)*)
+LD    TRUE
+MOVE    FlowCNT1, mReg2083
+(* Network 13 *)
+(*YCHSeñal de volumen que pasa por CNT1 (UND)*)
+LD    TRUE
+MOVE    VolCNT1, mReg2079
+(* Network 14 *)
+(*YCHPrendido actual realizado por el timer*)
+LD    %M111.7
+ST   %V4014.5
+(* Network 15 *)
+(*YCHError Tx en la referencia 1 (principal)*)
+LD    %M112.0
+EQ    TypeRef, 0
+EQ    WebMode, 1
+ST   %V4014.6
+(* Network 16 *)
+(*YCHError Tx en la referencia 2 (emergencia)*)
+LD    %M112.1
+EQ    TypeRef, 0
+EQ    WebMode, 1
+ST   %V4014.7
+(* Network 17 *)
+(*YCHValor que se está usando de la referencia remota*)
+LD    TRUE
+MOVE    RemoteRef, mReg2131

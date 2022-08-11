@@ -1,0 +1,13 @@
+VAR_INPUT
+    ENB  AT  %L2.6 : BOOL ; (* Señal de Enable *) 
+    DES  AT  %L2.4 : BOOL ; (* Condición de inhabilitación *) 
+END_VAR
+VAR_IN_OUT
+    CTRL  AT  %L2.1 : BOOL ; (* Salida de control *) 
+    OUT1  AT  %L2.2 : BOOL ; (* Salida 1 *) 
+    OUT2  AT  %L2.3 : BOOL ; (* Salida 2 *) 
+END_VAR
+VAR
+    desCond  AT  %L2.5 : BOOL ; (*  *) 
+    timerOn  AT  %L2.7 : BOOL ; (*  *) 
+END_VAR

@@ -1,0 +1,6 @@
+(*2*)
+(* Network 0 *)
+(*YCH1- Elimino la interrupcion SerialSetModbus2- Digo que todos los datos del payload de la respuesta se encuentran en el buffer*)
+LD    TRUE
+DTCH    31
+S    %M113.1

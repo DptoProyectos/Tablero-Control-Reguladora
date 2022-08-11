@@ -1,0 +1,7 @@
+VAR_INPUT
+    buffAdd  AT  %LW246 : INT ; (* Dirección del buffer en donde se encuentran los datos recividos *) 
+    buffProc  AT  %LW248 : INT ; (* Dirección del buffer que se usará para procesar los datos *) 
+END_VAR
+VAR_IN_OUT
+    start  AT  %L5.2 : BOOL ; (*  *) 
+END_VAR
