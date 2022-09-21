@@ -1,0 +1,147 @@
+(*2*)
+(* Network 0 *)
+(*YCHSe define el tiempo en segundo para las ejecuciones del bloque de software*)
+LD    TRUE
+MOVE    DI#15, TimerPoll
+(* Network 1 *)
+(*YCHTiempo en segundos que está habiliatada la logica de apertura de válvula*)
+LD    TRUE
+MOVE    60, Time2OpenValve
+(* Network 2 *)
+(*YCHTiempo en segundos que está habiliatada la logica de cierre de válvula*)
+LD    TRUE
+MOVE    60, Time2CloseValve
+(* Network 3 *)
+(*YCHArranco por el modo remoto*)
+LD    TRUE
+MOVE    102, mReg1934
+(* Network 4 *)
+(*YCHDigo que mi referencia por defecto va a ser un valor que recibo de forma remota*)
+LD    TRUE
+MOVE    0, TypeRef
+(* Network 5 *)
+(*YCHDigo que mi tipo de control va a ser por niveles de llenado*)
+LD    TRUE
+MOVE    0, controlSystem
+(* Network 6 *)
+(*YCHCNT0Tiempo (ms) en ON de un pulso válido para el contador CNT0*)
+LD    TRUE
+MOVE    80, TimePulseOn
+(* Network 7 *)
+(*YCHCNT0Tiempo (ms) en OFF de un pulso válido para el contador CNT0*)
+LD    TRUE
+MOVE    200, TimePulseOff
+(* Network 8 *)
+(*YCHCNT0Valor que representa un pulsos en la unidad que se quiere expresar*)
+LD    TRUE
+MOVE    0.01, Magpp
+(* Network 9 *)
+(*YCHCNT0Valor de conteo de pusos que pasan*)
+LD    TRUE
+MOVE    DI#0, PulseCount
+(* Network 10 *)
+(*YCHCNT1Tiempo (ms) en ON de un pulso válido para el contador CNT1*)
+LD    TRUE
+MOVE    80, TimePulseOn1
+(* Network 11 *)
+(*YCHCNT1Tiempo (ms) en OFF de un pulso válido para el contador CNT1*)
+LD    TRUE
+MOVE    200, TimePulseOff1
+(* Network 12 *)
+(*YCHCNT1Valor que representa un pulsos en la unidad que se quiere expresar*)
+LD    TRUE
+MOVE    0.01, Magpp1
+(* Network 13 *)
+(*YCHCNT0Valor de conteo de pusos que pasan*)
+LD    TRUE
+MOVE    DI#0, PulseCount1
+(* Network 14 *)
+(*YCHAIN0Corriente mínima*)
+LD    TRUE
+MOVE    4, AI0_Imin
+(* Network 15 *)
+(*YCHAIN0Corriente máxima*)
+LD    TRUE
+MOVE    20, AI0_Imax
+(* Network 16 *)
+(*YCHAIN0Magnitud minima de salida*)
+LD    TRUE
+MOVE    0.0, AI0_Mmin
+(* Network 17 *)
+(*YCHAIN0Magnitud maxima de salida*)
+LD    TRUE
+MOVE    15.0, AI0_Mmax
+(* Network 18 *)
+(*YCHAIN1Corriente mínima*)
+LD    TRUE
+MOVE    4, AI1_Imin
+(* Network 19 *)
+(*YCHAIN1Corriente máxima*)
+LD    TRUE
+MOVE    20, AI1_Imax
+(* Network 20 *)
+(*YCHAIN1Magnitud minima de salida*)
+LD    TRUE
+MOVE    0.0, AI1_Mmin
+(* Network 21 *)
+(*YCHAIN1Magnitud maxima de salida*)
+LD    TRUE
+MOVE    15.0, AI1_Mmax
+(* Network 22 *)
+(*YCHAO0Corriente mínima*)
+LD    TRUE
+MOVE    4, AO0_Imin
+(* Network 23 *)
+(*YCHAO0Corriente máxima*)
+LD    TRUE
+MOVE    20, AO0_Imax
+(* Network 24 *)
+(*YCHAO0Magnitud minima de entrada*)
+LD    TRUE
+MOVE    0.0, AO0_Mmin
+(* Network 25 *)
+(*YCHAO0Magnitud maxima de entrada*)
+LD    TRUE
+MOVE    50.0, AO0_Mmax
+(* Network 26 *)
+(*YCHENCENDIDO DIARIO*)
+LD    FALSE
+MOVE    255, mReg1990
+MOVE    15, mReg2019
+MOVE    00, mReg2020
+MOVE    16, mReg2021
+MOVE    00, mReg2022
+(* Network 27 *)
+(*YCHConfiguración predeterminada del timerCENT = 20FMT = 0*)
+LD    TRUE
+MOVE    B#20, SetRTCCent
+MOVE    B#0, RTCFMT
+(* Network 28 *)
+(*YCHValores de validación para el dato que viene de las referencia remota*)
+LD    TRUE
+MOVE    -0.1, LMinRef1
+MOVE    15.1, LMaxRef1
+MOVE    -0.1, LMinRef2
+MOVE    15.1, LMaxRef2
+(* Network 29 *)
+(*YCHPor default la perforación arranca a trabajar en modo remoto apagada*)
+LD    TRUE
+MOVE    102, mReg1934
+MOVE    100, mReg1935
+(* Network 30 *)
+(*YCHSeteo de los timers de espera para el check de el estado de la valvula y el timer de correccion de la accion de la valvula*)
+LD    TRUE
+MOVE    12000, Time2Check
+MOVE    150, Time2Set
+(* Network 31 *)
+(*YCHTiempo de espera por defecto antes de un nuevo cierre en el modo 4 automatico*)
+LD    TRUE
+MOVE    18000, waitingTime
+(* Network 32 *)
+(*YCHPor defecto el mayor tiempo de ajuste va a ser de 15 segundos*)
+LD    TRUE
+MOVE    2.0, DltModOut
+(* Network 33 *)
+(*YCHPor defecto la mayor desviacion que voy a tener en la referencia va a ser de 10 bar*)
+LD    TRUE
+MOVE    0.1, DltRef

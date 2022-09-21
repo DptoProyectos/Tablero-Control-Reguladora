@@ -1,0 +1,50 @@
+(*2*)
+(* Network 0 *)
+(*YCHEn condiciones inciales se va para el estado cero para hacer un ciclo de toma de medidas*)
+LD    %SM0.1
+MOVE    0, modState
+(* Network 1 *)
+(*YCHCuando se pasa de cero a uno la señal de start se inicia un ciclo de toma de medida*)
+LD    START
+R_TRIG
+MOVE    0, modState
+(* Network 2 *)
+(*YCHPongo las salidas en la siguiente configuraciónQ0.4 = 0*)
+LD    TRUE
+EQ    modState, 0
+R    SWO0
+(* Network 3 *)
+(*YCHEspero un segundo con las salidas en esta posicion antes de tomar la muestra*)
+LD    TRUE
+EQ    modState, 0
+TON   T70, 50
+__CR_EQ_1
+MOVE    T70, int0
+__CR_RESTORE
+MOVE    %AIW0, VAI0
+MOVE    1, modState
+(* Network 4 *)
+(*YCHPongo las salidas en la siguiente configuraciónQ0.4 = 1*)
+LD    TRUE
+EQ    modState, 1
+S    SWO0
+(* Network 5 *)
+(*YCHEspero un segundo con las salidas en esta posicion antes de tomar la muestra*)
+LD    TRUE
+EQ    modState, 1
+TON   T71, 50
+__CR_EQ_1
+MOVE    T71, int0
+__CR_RESTORE
+MOVE    %AIW0, VAI1
+MOVE    2, modState
+(* Network 6 *)
+(*YCHPongo las salidas en la siguiente configuración para ahorrar energiaQ0.4 = 0*)
+LD    TRUE
+EQ    modState, 2
+R    SWO0
+(* Network 7 *)
+(*YCHActivo el bit busy para indicar que se esta en proceso de toma de medida*)
+LD    TRUE
+NE    modState, 2
+ST   BSY

@@ -1,0 +1,18 @@
+VAR_INPUT
+    PTON  AT  %LW70 : INT ; (* ANCHO DEL PULSO PERMISIBLE PARA ESTA APLICACIÓN (multiplos de 10 ms) *) 
+    CH  AT  %L2.4 : BOOL ; (* CANAL EN DONDE SE QUIERE CONTAR LOS PULSOS *) 
+    PTOFF  AT  %LW72 : INT ; (* PERÍODO DEL PULSO PERMISIBLE PARA ESTA APLICACIÓN (multiplos de 10 ms) *) 
+END_VAR
+VAR_IN_OUT
+    COUNT  AT  %LD74 : DINT ; (* VOLUMEN QUE ESTA PASANDO *) 
+END_VAR
+VAR
+    cTimeOn  AT  %LW78 : INT ; (*  *) 
+    softCoun  AT  %LW80 : INT ; (*  *) 
+    pToffMs  AT  %LW82 : INT ; (*  *) 
+    pTonMs  AT  %LW84 : INT ; (*  *) 
+    timeOff  AT  %LW86 : INT ; (*  *) 
+    cTimeOf  AT  %LW88 : INT ; (*  *) 
+    timeOn  AT  %LW90 : INT ; (*  *) 
+    pulseSt  AT  %LW92 : INT ; (*  *) 
+END_VAR

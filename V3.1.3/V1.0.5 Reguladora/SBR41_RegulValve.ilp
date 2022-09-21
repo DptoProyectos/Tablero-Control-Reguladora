@@ -1,0 +1,58 @@
+(*2*)
+(* Network 0 *)
+(*YCHACOMPLE DE TIEMPOSSe multiplican por 10 los tiempos de entrada ya que el timer tiene resolución de 100 ms*)
+LD    TRUE
+AND(
+LD    TRUE
+MOVE    TimeOpen, real1
+MUL    10.0, real1
+R_TO_DI    real1, dint1
+DI_TO_I    dint1, int1
+OR(
+LD    TRUE
+MOVE    TimeClos, real2
+MUL    10.0, real2
+R_TO_DI    real2, dint2
+DI_TO_I    dint2, int2
+)
+)
+(* Network 1 *)
+(*YCHLOGICA DE APERTURA DE VÁLVULADoy la orden de abrir a la logica de apertura*)
+LD    TRUE
+GT    TimeOpen, 0.0
+S    opening
+S    CtrlOpen
+R    CtrlClos
+R    clossing
+(* Network 2 *)
+(*YCHLOGICA DE APERTURA DE VÁLVULAEspero el tiempo para completar la apertura y apago la lógica de apertura*)
+LD    opening
+TON   T91, int1
+__CR_EQ_1
+MOVE    T91, TIMER91
+__CR_RESTORE
+MOVE    0.0, TimeOpen
+R    opening
+R    CtrlOpen
+R    CtrlClos
+S    %V3648.2
+(* Network 3 *)
+(*YCHLOGICA DE CIERRE DE VÁLVULADoy la orden de cerrar a la logica de cierre*)
+LD    TRUE
+GT    TimeClos, 0.0
+S    clossing
+R    CtrlOpen
+S    CtrlClos
+R    opening
+(* Network 4 *)
+(*YCHLOGICA DE CIERRE DE VÁLVULAEspero el tiempo para completar el cierre y apago la lógica de cierre*)
+LD    clossing
+TON   T92, int2
+__CR_EQ_1
+MOVE    T92, TIMER92
+__CR_RESTORE
+MOVE    0.0, TimeClos
+R    clossing
+R    CtrlOpen
+R    CtrlClos
+R    %V3648.2

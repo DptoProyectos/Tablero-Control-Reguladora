@@ -1,0 +1,45 @@
+(*2*)
+(* Network 0 *)
+(*YCHCNT0Convierto los pulsos a volumen en UND*)
+LD    TRUE
+DI_TO_R    PulseCount, real6
+MOVE    real6, VolCNT0
+MUL    Magpp, VolCNT0
+(* Network 1 *)
+(*YCHCNT0Calculo el flujo en UND/hFlowCNT0(UND/h) = (3 600 000 * magpp)/tp(ms)Limito el tiempo para que aparezca 0 en la medida de flujoNOTA: Para este caso particular pasado los 2 minutos se pone en cero el flujo (DI#120000)*)
+LD    TRUE
+MOVE    Magpp, real0
+MUL    3600000.0, real0
+DI_TO_R    PulseTime, real1
+AND(
+LD    TRUE
+MOVE    real0, FlowCNT0
+DIV    real1, FlowCNT0
+OR(
+LD    TRUE
+GE    PulseTime, DI#120000
+MOVE    0.0, FlowCNT0
+)
+)
+(* Network 2 *)
+(*YCHCNT1Convierto los pulsos a volumen en UND*)
+LD    TRUE
+DI_TO_R    PulseCount1, real6
+MOVE    real6, VolCNT1
+MUL    Magpp1, VolCNT1
+(* Network 3 *)
+(*YCHCNT1Calculo el flujo en UND/hFlowCNT0(UND/h) = (3 600 000 * magpp)/tp(ms)Limito el tiempo para que aparezca 0 en la medida de flujoNOTA: Para este caso particular pasado los 2 minutos se pone en cero el flujo (DI#120000)*)
+LD    TRUE
+MOVE    Magpp1, real0
+MUL    3600000.0, real0
+DI_TO_R    PulseTime1, real1
+AND(
+LD    TRUE
+MOVE    real0, FlowCNT1
+DIV    real1, FlowCNT1
+OR(
+LD    TRUE
+GE    PulseTime1, DI#120000
+MOVE    0.0, FlowCNT1
+)
+)

@@ -1,0 +1,133 @@
+(*2*)
+(* Network 0 *)
+(*YCHIndico el modo en el que estoy trabajando0 -> EMERGENCIA 1 -> LOCAL2 -> REMOTO3 -> AUTOMATICO*)
+LD    TRUE
+MOVE    3, WorkingMode
+(* Network 1 *)
+(*YCHTomo el control de las salidas*)
+LD    TRUE
+S    %M102.3
+(* Network 2 *)
+(*YCHSelección de referencia0 -> REMOTO1 -> AI_02 -> AI_13 -> CNT_04 -> CNT_1*)
+LD    TRUE
+AND(
+LD    TRUE
+EQ    TypeRef, 0
+MOVE    RemoteRef, LevelRef
+OR(
+LD    TRUE
+EQ    TypeRef, 1
+MOVE    AI0_mag, LevelRef
+)
+OR(
+LD    FALSE
+EQ    TypeRef, 2
+MOVE    AI1_mag, LevelRef
+)
+OR(
+LD    TRUE
+EQ    TypeRef, 3
+MOVE    FlowCNT0, LevelRef
+)
+OR(
+LD    TRUE
+EQ    TypeRef, 4
+MOVE    FlowCNT1, LevelRef
+)
+)
+(* Network 3 *)
+(*YCHCONTROL POR NIVELES DE LLENADOMando a cerrar cuando el nivel es mayor que el máximo y abro cuando el nivel es menor que el mínimo*)
+LD    TRUE
+EQ    controlSystem, 0
+AND(
+LD    TRUE
+GE    LevelRef, MaxLevel
+R_BLK    1, ActValve
+OR(
+LD    TRUE
+LE    LevelRef, MINLevel
+S_BLK    1, ActValve
+)
+)
+(* Network 4 *)
+(*YCHCONTROL POR NIVELES DE VACIADOMando a abrir cuando el nivel es mayor que el máximo y cierro cuando el nivel es menor que el mínimo*)
+LD    TRUE
+EQ    controlSystem, 1
+AND(
+LD    TRUE
+GE    LevelRef, MaxLevel
+S_BLK    1, ActValve
+OR(
+LD    TRUE
+LE    LevelRef, MINLevel
+R_BLK    1, ActValve
+)
+)
+(* Network 5 *)
+(*YCHCONTROL EXTERNOLe sedo el control al sistema de emergencia o externo para que actue en este modo*)
+LD    TRUE
+EQ    controlSystem, 2
+R    %M102.3
+(* Network 6 *)
+(*YCHCONTROL POR CONSIGNA CONTINUA*)
+LD    TRUE
+EQ    controlSystem, 3
+CAL    SBR40    DltRef, DltModOut, Slogansgn, LevelRef, real0
+AND(
+LD    TRUE
+GT    real0, 15.0
+MOVE    15.0, real0
+OR(
+LD    TRUE
+LE    real0, 15.0
+)
+)
+AND(
+LD    TRUE
+GE    real0, 1.0
+AND(
+LD    TRUE
+GT    LevelRef, Slogansgn
+AND(
+LD    TRUE
+MOVE    real0, TimeRegCloseVal
+OR(
+LD    TRUE
+MOVE    0.0, TimeRegOpenVal
+)
+)
+OR(
+LD    TRUE
+LT    LevelRef, Slogansgn
+AND(
+LD    TRUE
+MOVE    real0, TimeRegOpenVal
+OR(
+LD    TRUE
+MOVE    0.0, TimeRegCloseVal
+)
+)
+)
+)
+OR(
+LD    TRUE
+LT    real0, 1.0
+MOVE    0.0, TimeRegOpenVal
+MOVE    0.0, TimeRegCloseVal
+)
+)
+(* Network 7 *)
+(*YCHCONTROL POR NIVELES DE LLENADO CON ESPERA DESPUES DE LA APERTURA  Mando a cerrar cuando el nivel es mayor que el máximo y abro cuando el nivel es menor que el mínimo. Una vez abierto deshabilito el modo automatico por 30 min para evitar un nuevo cerrado.*)
+LD    TRUE
+EQ    controlSystem, 4
+AND(
+LDN    %M112.6
+GE    LevelRef, MaxLevel
+R_BLK    1, ActValve
+OR(
+LD    TRUE
+LE    LevelRef, MINLevel
+S_BLK    1, ActValve
+S_BLK    1, specialTime
+)
+)

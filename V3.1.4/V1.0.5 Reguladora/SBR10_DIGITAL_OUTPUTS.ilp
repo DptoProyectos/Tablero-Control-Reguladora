@@ -1,0 +1,42 @@
+(*2*)
+(* Network 0 *)
+(*YCHBloque que controla la apertura y cierre de la válvulaActValve = 0 -> Cerrar válvulaActValve = 1 -> Abrir válvula*)
+LD    TRUE
+AND(
+LD    TRUE
+NE    controlSystem, 3
+OR(
+LD    TRUE
+EQ    WebMode, 2
+)
+OR    %M101.6
+CAL    SBR30    ActValve, Time2OpenValve, Time2CloseValve, valveBusy, ControlOut1, ControlOut0
+OR(
+LDN    %M101.6
+NE    WebMode, 2
+EQ    controlSystem, 3
+CAL    SBR41    TimeRegOpenVal, TimeRegCloseVal, ControlOut1, ControlOut0
+)
+)
+AND(
+LD    %M102.5
+OR    %M102.4
+)
+ST   %Q0.3
+(* Network 1 *)
+(*YCHSalida de control [ 0-> EMEGENCIA | 1-> PCL ]*)
+LD    %M102.3
+ST   %Q0.0
+(* Network 2 *)
+(*YCHActivo la salida para cerrar válvula*)
+LD    %M102.4
+ST   %Q0.1
+(* Network 3 *)
+(*YCHActivo la salida para abrir válvula*)
+LD    %M102.5
+ST   %Q0.2
+(* Network 4 *)
+(*YCHEncendido diarioNO SE USA EN MODO REMOTO*)
+LD    TRUE
+NE    WorkingMode, 2
+CAL    SBR28    t8Enable, ST0, %Q0.0, %Q0.1, %Q0.2

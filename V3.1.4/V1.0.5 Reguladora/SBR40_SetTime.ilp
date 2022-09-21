@@ -1,0 +1,25 @@
+(*2*)
+(* Network 0 *)
+(*YCHCalculo la pendiente m*)
+LD    TRUE
+MOVE    DeltaOut, real0
+DIV    DeltaRef, real0
+(* Network 1 *)
+(*YCHCalculo el tiempo usando una funcion lineal y = mx + n donde n = 0*)
+LD    TRUE
+MOVE    Slogan, real3
+SUB    Ref, real3
+ABS    real3, real4
+MOVE    real4, real1
+MUL    real0, real1
+R_TO_DI    real1, dint1
+AND(
+LD    TRUE
+GE    dint1, DI#0
+DI_TO_I    dint1, Out
+OR(
+LD    TRUE
+LT    dint1, DI#0
+MOVE    0, Out
+)
+)

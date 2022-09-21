@@ -1,0 +1,33 @@
+(*2*)
+(* Network 0 *)
+(*YCHSeteo el estado de la válvulaDigo que la válvula siempre va a estar abierta*)
+LD    TRUE
+S    %M112.2
+(* Network 1 *)
+(*YCHLOGICA DE APERTURA DE VÁLVULADoy la orden de abrir a la logica de aperturaDecremento el contador de tiempo de espera de la válvula abierta*)
+LD    TRUE
+GT    TimeOpen, 0
+AND    %M113.6
+F_TRIG
+DEC    TimeOpen
+S    CtrlOpen
+R    CtrlClos
+(* Network 2 *)
+(*YCHLOGICA DE APERTURA DE VÁLVULADetengo la logica de apertura de la válvula porque se vencio el tiempo seteado*)
+LD    TRUE
+EQ    TimeOpen, 0
+R    CtrlOpen
+(* Network 3 *)
+(*YCHLOGICA DE CIERRE DE VÁLVULADoy la orden de abrir a la logica de aperturaDecremento el contador de tiempo de espera de la válvula abierta*)
+LD    TRUE
+GT    TimeClos, 0
+AND    %M113.6
+F_TRIG
+DEC    TimeClos
+R    CtrlOpen
+S    CtrlClos
+(* Network 4 *)
+(*YCHLOGICA DE CIERRE DE VÁLVULADetengo la logica de cierre de la válvula porque se vencio el tiempo seteado*)
+LD    TRUE
+EQ    TimeClos, 0
+R    CtrlClos

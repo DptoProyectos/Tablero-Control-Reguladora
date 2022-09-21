@@ -1,0 +1,519 @@
+(*2*)
+(* Network 0 *)
+(*YCHTIMER 1PROGRAMACION DE ENCENDIDO*)
+LD    %M103.0
+EQ    RTC_Hour, t1HourStart
+EQ    RTC_Minute, t1MinStart
+AND(
+LD    %M104.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M104.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M104.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M104.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M104.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M104.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M104.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+S    %M102.4
+S    %M102.5
+S    %M111.7
+(* Network 1 *)
+(*YCHTIMER 1PROGRAMACION DE APAGADO*)
+LD    %M103.0
+EQ    RTC_Hour, t1HourStop
+EQ    RTC_Minute, t1MinStop
+AND(
+LD    %M104.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M104.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M104.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M104.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M104.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M104.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M104.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+R    %M102.4
+R    %M102.5
+R    %M111.7
+(* Network 2 *)
+(*YCHTIMER 2PROGRAMACION DE ENCENDIDO*)
+LD    %M103.1
+EQ    RTC_Hour, t2HourStart
+EQ    RTC_Minute, t2MinStart
+AND(
+LD    %M105.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M105.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M105.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M105.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M105.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M105.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M105.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+S    %M102.4
+S    %M102.5
+S    %M111.7
+(* Network 3 *)
+(*YCHTIMER 2PROGRAMACION DE APAGADO*)
+LD    %M103.1
+EQ    RTC_Hour, t2HourStop
+EQ    RTC_Minute, t2MinStop
+AND(
+LD    %M105.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M105.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M105.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M105.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M105.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M105.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M105.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+R    %M102.4
+R    %M102.5
+R    %M111.7
+(* Network 4 *)
+(*YCHTIMER 3PROGRAMACION DE ENCENDIDO*)
+LD    %M103.2
+EQ    RTC_Hour, t3HourStart
+EQ    RTC_Minute, t3MinStart
+AND(
+LD    %M106.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M106.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M106.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M106.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M106.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M106.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M106.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+S    %M102.4
+S    %M102.5
+S    %M111.7
+(* Network 5 *)
+(*YCHTIMER 3PROGRAMACION DE APAGADO*)
+LD    %M103.2
+EQ    RTC_Hour, t3HourStop
+EQ    RTC_Minute, t3MinStop
+AND(
+LD    %M106.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M106.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M106.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M106.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M106.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M106.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M106.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+R    %M102.4
+R    %M102.5
+R    %M111.7
+(* Network 6 *)
+(*YCHTIMER 4PROGRAMACION DE ENCENDIDO*)
+LD    %M103.3
+EQ    RTC_Hour, t4HourStart
+EQ    RTC_Minute, t4MinStart
+AND(
+LD    %M107.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M107.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M107.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M107.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M107.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M107.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M107.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+S    %M102.4
+S    %M102.5
+S    %M111.7
+(* Network 7 *)
+(*YCHTIMER 4PROGRAMACION DE APAGADO*)
+LD    %M103.3
+EQ    RTC_Hour, t4HourStop
+EQ    RTC_Minute, t4MinStop
+AND(
+LD    %M107.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M107.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M107.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M107.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M107.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M107.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M107.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+R    %M102.4
+R    %M102.5
+R    %M111.7
+(* Network 8 *)
+(*YCHTIMER 5PROGRAMACION DE ENCENDIDO*)
+LD    %M103.4
+EQ    RTC_Hour, t5HourStart
+EQ    RTC_Minute, t5MinStart
+AND(
+LD    %M108.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M108.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M108.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M108.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M108.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M108.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M108.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+S    %M102.4
+S    %M102.5
+S    %M111.7
+(* Network 9 *)
+(*YCHTIMER 5PROGRAMACION DE APAGADO*)
+LD    %M103.4
+EQ    RTC_Hour, t5HourStop
+EQ    RTC_Minute, t5MinStop
+AND(
+LD    %M108.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M108.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M108.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M108.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M108.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M108.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M108.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+R    %M102.4
+R    %M102.5
+R    %M111.7
+(* Network 10 *)
+(*YCHTIMER 6PROGRAMACION DE ENCENDIDO*)
+LD    %M103.5
+EQ    RTC_Hour, t6HourStart
+EQ    RTC_Minute, t6MinStart
+AND(
+LD    %M109.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M109.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M109.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M109.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M109.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M109.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M109.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+S    %M102.4
+S    %M102.5
+S    %M111.7
+(* Network 11 *)
+(*YCHTIMER 6PROGRAMACION DE APAGADO*)
+LD    %M103.5
+EQ    RTC_Hour, t6HourStop
+EQ    RTC_Minute, t6MinStop
+AND(
+LD    %M109.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M109.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M109.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M109.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M109.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M109.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M109.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+R    %M102.4
+R    %M102.5
+R    %M111.7
+(* Network 12 *)
+(*YCHTIMER 7PROGRAMACION DE ENCENDIDO*)
+LD    %M103.6
+EQ    RTC_Hour, t7HourStart
+EQ    RTC_Minute, t7MinStart
+AND(
+LD    %M110.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M110.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M110.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M110.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M110.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M110.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M110.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+S    %M102.4
+S    %M102.5
+S    %M111.7
+(* Network 13 *)
+(*YCHTIMER 7PROGRAMACION DE APAGADO*)
+LD    %M103.6
+EQ    RTC_Hour, t7HourStop
+EQ    RTC_Minute, t7MinStop
+AND(
+LD    %M110.0
+EQ    RTC_Week, B#1
+OR(
+LD    %M110.1
+EQ    RTC_Week, B#2
+)
+OR(
+LD    %M110.2
+EQ    RTC_Week, B#3
+)
+OR(
+LD    %M110.3
+EQ    RTC_Week, B#4
+)
+OR(
+LD    %M110.4
+EQ    RTC_Week, B#5
+)
+OR(
+LD    %M110.5
+EQ    RTC_Week, B#6
+)
+OR(
+LD    %M110.6
+EQ    RTC_Week, B#7
+)
+)
+S    %M102.3
+R    %M102.4
+R    %M102.5
+R    %M111.7

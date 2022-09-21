@@ -1,0 +1,38 @@
+(*2*)
+(* Network 0 *)
+(*YCHIN/OUT MODULEValores de entrada y salida del modulo. Se usa como alternativa para ahorrar memoria del tipo L*)
+LD    TRUE
+MOVE    AI1_Mmax, AI1MMAX
+MOVE    AI1, AI1AIN
+MOVE    AI1_Mmin, AI1MMIN
+MOVE    AI1_Imax, AI1IMAX
+MOVE    AI1_Imin, AI1IMIN
+MOVE    AI1_Offset, AI1OFFSET
+(* Network 1 *)
+(*YCHCalculo el valor de la magnitud del sensorValido la medida solo si los rangos en mA se encuentran entre IMIN e IMAX*)
+LD    TRUE
+MOVE    AI1IMIN, int0
+MUL    1000, int0
+MOVE    AI1IMAX, int1
+MUL    1000, int1
+LINCO    int0, int1, AI1MMIN, AI1MMAX, 1.0, AI1AIN, dint0, real0
+GE    AI1AIN, int0
+LE    AI1AIN, int1
+MOVE    real0, AO
+ADD    AI1OFFSET, AO
+(* Network 2 *)
+(*YCHIndico magnitud de corriente del sensor fuera de los rangos de entrada por overload*)
+LD    TRUE
+GT    AI1AIN, int1
+ST   HIG
+(* Network 3 *)
+(*YCHIndico magnitud de corriente del sensor fuera de los rangos de entrada por underload*)
+LD    TRUE
+LT    AI1AIN, int0
+ST   LOW
+(* Network 4 *)
+(*activación de alarma cuando pasen 5 segundos calor fuera de rango*)
+LD    LOW
+OR    HIG
+TON   T5, 500
+ST   ALAR

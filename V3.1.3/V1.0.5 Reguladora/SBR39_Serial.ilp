@@ -1,0 +1,171 @@
+(*2*)
+(* Network 0 *)
+(*YCH1- Solo ejecuto operaciones de tx cuando hay un flanco de subida2- Fuerzo el finalizador de las tareas que se ejecutan luego de finalizada la receción de datos.*)
+LD    tx
+R_TRIG
+MOVE    B#0, serial_buffSize
+ST   %M113.0
+R    %M113.1
+R    tx
+(* Network 1 *)
+(*YCHMuevo la dirección del buffer a una variable global para hacer uso mas racional de la memoria tipo L*)
+LD    %M113.0
+MOVE    buffAddr, serial_buffAdd
+(* Network 2 *)
+(*YCHLimpio el buffer para que pueda ser utilizado en la transmision de nuevos datos*)
+LD    %M113.0
+FILL  B#0, serial_buffData, B#255
+(* Network 3 *)
+(*YCHCONFIGURACION DE TRANMISIÓN1-Seteo el tiempo de transmision efectiva a 10ms*)
+LD    %M113.0
+MOVE    10, %SMW190
+(* Network 4 *)
+(*YCHCONFIGURACION DE RECEPCION1-OJO: La cantidad de bytes de recepcion sera dinamica para poder descartar el header http2-Seteo el tiempo de recepcion efectiva a 500ms*)
+LD    %M113.0
+MOVE    1000, %SMW192
+(* Network 5 *)
+(*YCHCONFIGURACION DEL PUERTO DE COMUNICACIONES0-> Reservado1-> Enable interrupciones2-> Obedecer tiempo de recepcion en SMW1923-> Reservado4-> Obedecer tiempo de transmisión en SMW1905-> Uso de caracter de Stop6-> Uso de caracter de Start7-> Habilitar RCV function*)
+LD    %M113.0
+MOVE    B#2#10010110, %SMB187
+(* Network 6 *)
+(*YCHPREPARACION1- Se crea un puntero que apunte al buffer de tx2- Se desplaza el puntero al inicio del buffer2- Se crea una interrupcion para el fin de la transmision*)
+LD    %M113.0
+AND(
+LD    TRUE
+MOVE    &VB0, %VD500
+OR(
+LD    TRUE
+I_TO_DI    buffAddr, dint0
+ADD    dint0, %VD500
+)
+OR(
+LD    TRUE
+ATCH    INT02, 32
+)
+)
+(* Network 7 *)
+(*YCH##################################################################################################;TYPE:Armo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, B#59, B#84, B#89, B#80, B#69, B#58
+(* Network 8 *)
+(*YCHPLCArmo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, B#80, B#76, B#67, B#0, B#0, B#0
+(* Network 9 *)
+(*YCH##################################################################################################;VER:Armo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, B#59, B#86, B#69, B#82, B#58, B#0
+(* Network 10 *)
+(*4.0.4Armo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, B#52, B#46, B#48, B#46, B#52, B#0
+(* Network 11 *)
+(*YCH##################################################################################################;MOD:Armo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, B#59, B#77, B#79, B#68, B#69, B#58
+(* Network 12 *)
+(*YCHMODO -> XXXXXXXXSe toma el dato y se convierte a ASCIII bajo cierto formatoSe coloca en un espacio temporal el resultado de la conversiónSe limpian los caracteres creados de todos los espacios bacios que contenga y se coloca en el buffer tx*)
+LD    %M113.0
+AND(
+LD    TRUE
+MOVE    WorkingMode, int0
+ADD    100, int0
+OR(
+LD    TRUE
+MOVE    B#2#00000000, byte0
+)
+)
+I_TO_A  int0, serial_FirstTmpD, byte0
+CAL    SBR36    DI#0, 7, tmpAddr
+(* Network 13 *)
+(*YCH##################################################################################################;ST:Armo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, FALSE, FALSE, TRUE, B#59, B#83, B#84, B#68, B#69, B#58
+(* Network 14 *)
+(*YCHESTADO -> XXXXXXXXSe toma el dato y se convierte a ASCIII bajo cierto formatoSe coloca en un espacio temporal el resultado de la conversiónSe limpian los caracteres creados de todos los espacios bacios que contenga y se coloca en el buffer tx*)
+LD    %M113.0
+AND(
+LD    TRUE
+MOVE    States, int0
+ADD    0, int0
+OR(
+LD    TRUE
+MOVE    B#2#00000000, byte0
+)
+)
+I_TO_A  int0, serial_FirstTmpD, byte0
+CAL    SBR36    DI#0, 7, tmpAddr
+(* Network 15 *)
+(*YCH##################################################################################################;AI0:Armo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, B#59, B#65, B#73, B#48, B#69, B#58
+(* Network 16 *)
+(*YCHAIO -> -123456.12Se toma el dato y se convierte a ASCIII bajo cierto formatoSe coloca en un espacio temporal el resultado de la conversiónSe limpian los caracteres creados de todos los espacios bacios que contenga y se coloca en el buffer tx*)
+LD    %M113.0
+MOVE    B#2#11110010, byte0
+R_TO_A  AI0_mag, serial_FirstTmpD, byte0
+CAL    SBR36    DI#0, 14, tmpAddr
+(* Network 17 *)
+(*YCH##################################################################################################;AI1:Armo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, TRUE, FALSE, TRUE, B#59, B#65, B#73, B#49, B#69, B#58
+(* Network 18 *)
+(*YCHAI1 -> -123456.12Se toma el dato y se convierte a ASCIII bajo cierto formatoSe coloca en un espacio temporal el resultado de la conversiónSe limpian los caracteres creados de todos los espacios bacios que contenga y se coloca en el buffer tx*)
+LD    %M113.0
+MOVE    B#2#11110010, byte0
+R_TO_A  AI1_mag, serial_FirstTmpD, byte0
+CAL    SBR36    DI#0, 14, tmpAddr
+(* Network 19 *)
+(*YCH##################################################################################################;CNT0:Armo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, B#59, B#67, B#78, B#84, B#48, B#58
+(* Network 20 *)
+(*YCHFLUJO EN CNT0 -> -123456.12Se toma el dato y se convierte a ASCIII bajo cierto formatoSe coloca en un espacio temporal el resultado de la conversiónSe limpian los caracteres creados de todos los espacios bacios que contenga y se coloca en el buffer tx*)
+LD    %M113.0
+MOVE    B#2#11110010, byte0
+R_TO_A  FlowCNT0, serial_FirstTmpD, byte0
+CAL    SBR36    DI#0, 14, tmpAddr
+(* Network 21 *)
+(*YCH##################################################################################################;VOL0:Armo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, B#59, B#86, B#79, B#76, B#48, B#58
+(* Network 22 *)
+(*YCHVOLUMEN EN CNT0 -> -123456.12Se toma el dato y se convierte a ASCIII bajo cierto formatoSe coloca en un espacio temporal el resultado de la conversiónSe limpian los caracteres creados de todos los espacios bacios que contenga y se coloca en el buffer tx*)
+LD    %M113.0
+MOVE    B#2#11110010, byte0
+R_TO_A  VolCNT0, serial_FirstTmpD, byte0
+CAL    SBR36    DI#0, 14, tmpAddr
+(* Network 23 *)
+(*YCH##################################################################################################;CNT1:Armo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, B#59, B#67, B#78, B#84, B#49, B#58
+(* Network 24 *)
+(*YCHFLUJO EN CNT1 -> -123456.12Se toma el dato y se convierte a ASCIII bajo cierto formatoSe coloca en un espacio temporal el resultado de la conversiónSe limpian los caracteres creados de todos los espacios bacios que contenga y se coloca en el buffer tx*)
+LD    %M113.0
+MOVE    B#2#11110010, byte0
+R_TO_A  FlowCNT1, serial_FirstTmpD, byte0
+CAL    SBR36    DI#0, 14, tmpAddr
+(* Network 25 *)
+(*YCH##################################################################################################;VOL1:Armo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, B#59, B#86, B#79, B#76, B#49, B#58
+(* Network 26 *)
+(*YCHVOLUMEN EN CNT1 -> -123456.12Se toma el dato y se convierte a ASCIII bajo cierto formatoSe coloca en un espacio temporal el resultado de la conversiónSe limpian los caracteres creados de todos los espacios bacios que contenga y se coloca en el buffer tx*)
+LD    %M113.0
+MOVE    B#2#11110010, byte0
+R_TO_A  VolCNT1, serial_FirstTmpD, byte0
+CAL    SBR36    DI#0, 14, tmpAddr
+(* Network 27 *)
+(*YCH##################################################################################################;RREF:Armo la etiqueta y la coloco en el buffer tx*)
+LD    %M113.0
+CAL    SBR37    TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, B#59, B#82, B#82, B#69, B#70, B#58
+(* Network 28 *)
+(*YCHREFERENCIA REMOTA -> -123456.12Se toma el dato y se convierte a ASCIII bajo cierto formatoSe coloca en un espacio temporal el resultado de la conversiónSe limpian los caracteres creados de todos los espacios bacios que contenga y se coloca en el buffer tx*)
+LD    %M113.0
+MOVE    B#2#11110010, byte0
+R_TO_A  2.98, serial_FirstTmpD, byte0
+CAL    SBR36    DI#0, 14, tmpAddr
+(* Network 29 *)
+(*YCH1-Transmito los datos que se encuentran en el buffer*)
+LD    %M113.0
+XMT    serial_buffSize, 1

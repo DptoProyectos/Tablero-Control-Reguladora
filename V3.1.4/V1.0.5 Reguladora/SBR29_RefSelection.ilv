@@ -1,0 +1,10 @@
+VAR_IN_OUT
+    RefIn1  AT  %LD134 : REAL ; (* Referencia principal *) 
+    RefIn2  AT  %LD220 : REAL ; (* Referencia secundaria (emergencia) *) 
+    nRef1  AT  %L5.2 : BOOL ; (* nueva referencia 1 *) 
+END_VAR
+VAR_OUTPUT
+    RefOut  AT  %LD144 : REAL ; (* Salida de referencia *) 
+    eRef1  AT  %L5.0 : BOOL ; (* Error en referecia 1 *) 
+    eRef2  AT  %L5.1 : BOOL ; (* Error en referecia 2 *) 
+END_VAR

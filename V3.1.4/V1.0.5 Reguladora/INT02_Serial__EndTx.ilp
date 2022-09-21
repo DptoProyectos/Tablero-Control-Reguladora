@@ -1,0 +1,21 @@
+(*2*)
+(* Network 0 *)
+(*YCHLimpio el buffer para una recepción de datos*)
+LD    TRUE
+FILL  B#0, serial_buffData, B#255
+(* Network 1 *)
+(*YCHElimino la interrupcion SerialEndRx*)
+LD    TRUE
+DTCH    31
+(* Network 2 *)
+(*YCH*)
+LD    TRUE
+ATCH    INT01, 31
+(* Network 3 *)
+(*YCHMe preparo para recibir los 140 bytes de cabecera http.NOTA: No se le puede poner mas bytes a la cabecera debido a que su largo pudiera ser mas corto y tomar parte de los datos*)
+LD    TRUE
+MOVE    B#140, %SMB194
+(* Network 4 *)
+(*YCH1-Recivo los primeros bytes de cabecera*)
+LD    TRUE
+RCV    serial_buffData, 1

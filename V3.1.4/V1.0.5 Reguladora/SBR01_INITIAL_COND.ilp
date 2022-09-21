@@ -1,0 +1,5 @@
+(*2*)
+(* Network 0 *)
+(*YCHActivo la salida de control para no esperar los 15 segundos de corrida del software*)
+LD    TRUE
+S    %M102.3

@@ -1,0 +1,165 @@
+(*2*)
+(* Network 0 *)
+(*YCHGarantizo que cuando se reinicie el software el debug quede en ceroVoy para el estado cero de mi máquina de estados para arrancar con el software*)
+LD    %SM0.1
+R    %M0.7
+(* Network 1 *)
+(*YCHCondicion para activar el bloque de condiciones iniciales*)
+LDN    %M0.7
+AND    %SM0.1
+ST   %M100.0
+(* Network 2 *)
+(*YCHCondición para ejecutar el bloque de configuraciones iniciales. Solo se ejecuta una vez cuando se descarga el soft del PLC*)
+LDN    %V3648.1
+TON   T12, 1
+__CR_EQ_1
+MOVE    T12, int0
+__CR_RESTORE
+S    %V3648.1
+(* Network 3 *)
+(*YCHCondiciones para activar los siguientes bloques:- Señales de entrada al software desde el HMI: RD_HMI- Señales de entrada al sofware proveniente de periféricos (Excepto HMI): DRV_IN*)
+LDN    %M0.7
+ST   %M100.1
+ST   %M100.2
+ST   %M102.7
+S    %M100.3
+(* Network 4 *)
+(*YCHEn modo debug el software no se ejecuta*)
+LD    %M0.7
+R    %M100.3
+(* Network 5 *)
+(*YCHCiclos de 15 segundos para la ejecusión del software*)
+LDN    %M0.7
+AND(
+LDN    %M100.4
+TON   T100, 150
+__CR_EQ_1
+MOVE    T100, int0
+__CR_RESTORE
+ALT    toggle0
+OR(
+LD    %M100.4
+TON   T1, 1
+__CR_EQ_1
+MOVE    T1, int0
+__CR_RESTORE
+ALT    toggle0
+)
+)
+(* Network 6 *)
+(*YCHCada vez que se cumplan 15 segundos arranca la máquina de estados por el estado cero*)
+LDN    %M0.7
+AND    %M100.4
+R_TRIG
+MOVE    1, State
+(* Network 7 *)
+(*YCHMODO DEBUGLeo continuamente las entradas analógicas para refrescarlas en el HMI*)
+LD    %M0.7
+AND(
+LDN    %M0.0
+TON   T24, 1
+__CR_EQ_1
+MOVE    T24, int0
+__CR_RESTORE
+S_BLK    1, ReadAin
+AND    %M100.7
+F_TRIG
+R_BLK    1, ReadAin
+S_BLK    1, bool0
+OR(
+LD    %M0.0
+TON   T25, 1
+__CR_EQ_1
+MOVE    T25, int1
+__CR_RESTORE
+S_BLK    1, ReadAin
+AND    %M100.7
+F_TRIG
+R_BLK    1, ReadAin
+R_BLK    1, bool0
+)
+OR(
+LD    %M0.6
+S_BLK    1, DrvInput
+)
+)
+(* Network 8 *)
+(*YCHRead de RTC Time*)
+LD    TRUE
+RTC_R    RTCFMT, RTC_Week, RTC_Second, RTC_Minute, RTC_Hour, RTC_Day, RTC_Month, RTC_Year, RTC_Century
+(* Network 9 *)
+(*YCHSet RTC TimeSeteo de hora*)
+LD    TRUE
+NE    SetRTCHour, B#0
+RTC_W    RTCFMT, RTC_Week, RTC_Second, RTC_Minute, SetRTCHour, RTC_Day, RTC_Month, RTC_Year, RTC_Century
+MOVE    SetRTCHour, RTC_Hour
+MOVE    B#0, SetRTCHour
+(* Network 10 *)
+(*YCHSet RTC TimeSeteo de minuto*)
+LD    TRUE
+NE    SetRTCMin, B#0
+RTC_W    RTCFMT, RTC_Week, RTC_Second, SetRTCMin, RTC_Hour, RTC_Day, RTC_Month, RTC_Year, RTC_Century
+MOVE    SetRTCMin, RTC_Minute
+MOVE    B#0, SetRTCMin
+(* Network 11 *)
+(*YCHSet RTC TimeSeteo de día de la semana*)
+LD    TRUE
+NE    SetRTCWeek, B#0
+RTC_W    RTCFMT, SetRTCWeek, RTC_Second, RTC_Minute, RTC_Hour, RTC_Day, RTC_Month, RTC_Year, RTC_Century
+MOVE    SetRTCWeek, RTC_Week
+MOVE    B#0, SetRTCWeek
+(* Network 12 *)
+(*YCHSet RTC TimeSeteo del día*)
+LD    TRUE
+NE    SetRTCDay, B#0
+RTC_W    RTCFMT, RTC_Week, RTC_Second, RTC_Minute, RTC_Hour, SetRTCDay, RTC_Month, RTC_Year, RTC_Century
+MOVE    SetRTCDay, RTC_Day
+MOVE    B#0, SetRTCDay
+(* Network 13 *)
+(*YCHSet RTC TimeSeteo del mes*)
+LD    TRUE
+NE    SetRTCMonth, B#0
+RTC_W    RTCFMT, RTC_Week, RTC_Second, RTC_Minute, RTC_Hour, RTC_Day, SetRTCMonth, RTC_Year, RTC_Century
+MOVE    SetRTCMonth, RTC_Month
+MOVE    B#0, SetRTCMonth
+(* Network 14 *)
+(*YCHSet RTC TimeSeteo del año*)
+LD    TRUE
+NE    SetRTCYear, B#0
+RTC_W    RTCFMT, RTC_Week, RTC_Second, RTC_Minute, RTC_Hour, RTC_Day, RTC_Month, SetRTCYear, RTC_Century
+MOVE    SetRTCYear, RTC_Year
+MOVE    B#0, SetRTCYear
+(* Network 15 *)
+(*YCHSet RTC TimeSeteo del centenario*)
+LD    TRUE
+NE    SetRTCCent, B#0
+RTC_W    RTCFMT, RTC_Week, RTC_Second, RTC_Minute, RTC_Hour, RTC_Day, RTC_Month, RTC_Year, SetRTCCent
+MOVE    SetRTCCent, RTC_Century
+MOVE    B#0, SetRTCCent
+(* Network 16 *)
+(*YCHbit especial que una vez activo tarda 30 minutos en desactivarse*)
+LD    %M112.6
+TON   T90, waitingTime
+__CR_EQ_1
+MOVE    T90, %VW4094
+__CR_RESTORE
+R_BLK    1, specialTime
+(* Network 17 *)
+(*YCHTimer que genera un pulso que tiene 500 ms en nivel low y 500 ms en nivel hieght*)
+LD    TRUE
+AND(
+LDN    %M113.6
+TON   T93, 5
+__CR_EQ_1
+MOVE    T93, int0
+__CR_RESTORE
+S_BLK    1, toggle1s
+OR(
+LD    %M113.6
+TON   T94, 5
+__CR_EQ_1
+MOVE    T94, int0
+__CR_RESTORE
+R_BLK    1, toggle1s
+)
+)

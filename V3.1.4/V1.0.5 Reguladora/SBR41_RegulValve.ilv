@@ -1,0 +1,8 @@
+VAR_IN_OUT
+    TimeOpen  AT  %LW130 : INT ; (*  *) 
+    TimeClos  AT  %LW132 : INT ; (* Tiempo en segundos que demora en cerrar la válvula *) 
+END_VAR
+VAR_OUTPUT
+    CtrlOpen  AT  %L5.4 : BOOL ; (* Salida de control para abrir *) 
+    CtrlClos  AT  %L5.5 : BOOL ; (* Salida de control para cerrar *) 
+END_VAR

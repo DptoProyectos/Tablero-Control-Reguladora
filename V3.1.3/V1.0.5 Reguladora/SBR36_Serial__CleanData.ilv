@@ -1,0 +1,5 @@
+VAR_INPUT
+    pOffset  AT  %LD54 : DINT ; (* Offset del puntero respecto su posicion original *) 
+    noChar  AT  %LW58 : INT ; (* Número de caracteres a limpiar *) 
+    tmpAddr  AT  %LW60 : INT ; (* Dirección en donde comienzan los datos temporales *) 
+END_VAR

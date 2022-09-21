@@ -1,0 +1,75 @@
+(*2*)
+(* Network 0 *)
+(*YCHPreparo punteros*)
+LD    TRUE
+AND(
+LD    TRUE
+MOVE    &VB0, %VD508
+I_TO_DI    16, dint1
+I_TO_DI    SetRcvData_BfPro, dint2
+MOVE    dint1, dint3
+ADD    dint2, dint3
+ADD    dint3, %VD508
+OR(
+LD    TRUE
+MOVE    &VB0, %VD512
+I_TO_DI    24, dint1
+I_TO_DI    SetRcvData_BfPro, dint2
+MOVE    dint1, dint3
+ADD    dint2, dint3
+ADD    dint3, %VD512
+)
+)
+(* Network 1 *)
+(*YCHEjecuto un ciclo por cada byte hexa que haya quedado convertido*)
+LD    TRUE
+FOR    int0, 0, 7
+(* Network 2 *)
+LD    TRUE
+MOVE    *VD508, byte4
+CAL    SBR33    byte4, byte6, byte5
+MOVE    byte5, *VD512
+INC    %VD512
+MOVE    byte6, *VD512
+INC    %VD512
+INC    %VD508
+(* Network 3 *)
+LD    TRUE
+NEXT
+(* Network 4 *)
+(*YCHPreparo punteros*)
+LD    TRUE
+AND(
+LD    TRUE
+MOVE    &VB0, %VD520
+I_TO_DI    56, dint1
+I_TO_DI    SetRcvData_BfPro, dint2
+MOVE    dint1, dint3
+ADD    dint2, dint3
+ADD    dint3, %VD520
+OR(
+LD    TRUE
+MOVE    &VB0, %VD524
+I_TO_DI    64, dint1
+I_TO_DI    SetRcvData_BfPro, dint2
+MOVE    dint1, dint3
+ADD    dint2, dint3
+ADD    dint3, %VD524
+)
+)
+(* Network 5 *)
+(*YCHEjecuto un ciclo por cada byte hexa que haya quedado convertido*)
+LD    TRUE
+FOR    int0, 0, 7
+(* Network 6 *)
+LD    TRUE
+MOVE    *VD520, byte4
+CAL    SBR33    byte4, byte6, byte5
+MOVE    byte5, *VD524
+INC    %VD524
+MOVE    byte6, *VD524
+INC    %VD524
+INC    %VD520
+(* Network 7 *)
+LD    TRUE
+NEXT

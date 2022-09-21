@@ -12,10 +12,10 @@ S    %M102.3
 LD    %M101.6
 AND    %M112.4
 MOVE    101, mReg1935
-S    %M112.3
+S    %V3648.3
 (* Network 3 *)
 (*YCHSi estoy en modo local y mando a cerrar ejecuto la logica de cerrado*)
 LD    %M101.6
 ANDN    %M112.4
 MOVE    100, mReg1935
-R    %M112.3
+R    %V3648.3

@@ -1,0 +1,13 @@
+(*2*)
+(* Network 0 *)
+(*YCHIndico el modo en el que estoy trabajando0 -> EMERGENCIA 1 -> LOCAL2 -> REMOTO3 -> AUTOMATICO*)
+LD    TRUE
+MOVE    2, WorkingMode
+(* Network 1 *)
+(*YCHTomo el control de las salidas*)
+LD    TRUE
+S    %M102.3
+(* Network 2 *)
+(*YCHActúo para abrir o cerrar la válvula reguladora*)
+LD    %V3648.0
+ST   %V3648.3

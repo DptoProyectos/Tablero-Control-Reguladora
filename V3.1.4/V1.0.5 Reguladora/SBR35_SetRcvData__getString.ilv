@@ -1,0 +1,4 @@
+VAR
+    strYet  AT  %L1.2 : BOOL ; (* flag que indica que estamos en precencia de strig y no de caracteres de inicio-fin *) 
+    endScan  AT  %L1.3 : BOOL ; (* flag que indica que se terminó de leer el frame de respuesta *) 
+END_VAR

@@ -2,7 +2,7 @@
 (* Network 0 *)
 (*YCHBloque que controla la apertura y cierre de la válvulaActValve = 0 -> Cerrar válvulaActValve = 1 -> Abrir válvula*)
 LD    TRUE
-CAL    SBR30    ActValve, Time2OpenValve, Time2CloseValve, valveBusy, ControlOut1, ControlOut0
+CAL    SBR30    %V3648.3, Time2OpenValve, Time2CloseValve, valveBusy, ControlOut1, ControlOut0
 AND(
 LD    %M102.5
 OR    %M102.4

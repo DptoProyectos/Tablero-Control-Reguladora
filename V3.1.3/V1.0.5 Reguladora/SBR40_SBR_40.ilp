@@ -1,0 +1,48 @@
+(*2*)
+(* Network 0 *)
+LD    TRUE
+MOVE    DeltaOut, real0
+ADD    1.0, real0
+LN    real0, real0
+DIV    DeltaRef, real0
+EXP    real0, real1
+(* Network 1 *)
+LD    TRUE
+MOVE    Slogan, real3
+SUB    Ref, real3
+ABS    real3, real4
+LN    real1, real5
+MOVE    real5, real6
+MUL    real4, real6
+EXP    real6, real7
+SUB    1.0, real7
+(* Network 2 *)
+LD    TRUE
+AND(
+LD    TRUE
+GT    real3, 0.0
+AND(
+LD    TRUE
+LT    Out, DeltaOut
+ADD    real7, Out
+OR(
+LD    TRUE
+GE    Out, DeltaOut
+MOVE    DeltaOut, Out
+)
+)
+OR(
+LD    TRUE
+LT    real3, 0.0
+AND(
+LD    TRUE
+GT    Out, 0.0
+SUB    real7, Out
+OR(
+LD    TRUE
+LE    Out, 0.0
+MOVE    0.0, Out
+)
+)
+)
+)

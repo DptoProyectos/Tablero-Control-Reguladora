@@ -1,0 +1,14 @@
+(*2*)
+(* Network 0 *)
+(*YCHln(10)*)
+LD    TRUE
+LN    10.0, real1
+(* Network 1 *)
+(*YCHx*ln(10)*)
+LD    TRUE
+MOVE    ExIN, real2
+MUL    real1, real2
+(* Network 2 *)
+(*YCHe^x*ln(10)*)
+LD    TRUE
+EXP    real2, ExOut
